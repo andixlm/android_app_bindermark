@@ -22,5 +22,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile project(':common')
+    compile project(':client')
+    compile project(':server')
+
     compile 'com.android.support:appcompat-v7:26.+'
 }
