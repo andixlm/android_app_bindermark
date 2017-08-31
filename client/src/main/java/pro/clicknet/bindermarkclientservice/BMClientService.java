@@ -24,8 +24,7 @@ public class BMClientService extends IBinderMarkClientService.Stub {
         BMRequest request = new BMRequest(size);
 
         long startTime = System.currentTimeMillis();
-        // TODO: Get response from server.
-        BMResponse response = null;
+        BMResponse response = mServer.get(request);
         long endTime = System.currentTimeMillis();
 
         return response;
