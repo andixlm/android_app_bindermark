@@ -2,6 +2,7 @@ package pro.clicknet.bindermarkclientservice;
 
 import android.os.RemoteException;
 
+import pro.clicknet.bindermarkcommon.BMRequest;
 import pro.clicknet.bindermarkcommon.BMResponse;
 import pro.clicknet.bindermarkcommon.IBinderMarkClientService;
 import pro.clicknet.bindermarkserverservice.BMServerService;
@@ -20,6 +21,8 @@ public class BMClientService extends IBinderMarkClientService.Stub {
 
     @Override
     public BMResponse perform(int size) throws RemoteException {
+        BMRequest request = new BMRequest(size);
+
         long startTime = System.currentTimeMillis();
         // TODO: Get response from server.
         BMResponse response = null;
