@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/margin_preferences"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_preferences">
+
+        <TextView
+            android:id="@+id/text_pref_size"
+            style="@android:style/TextAppearance.Material.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_pref_size_value" />
+
+        <EditText
+            android:id="@+id/text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/text_pref_size"
+            android:textAlignment="viewEnd" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_preferences">
+
+        <TextView
+            android:id="@+id/text_pref_native_method"
+            style="@android:style/TextAppearance.Material.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_pref_native_method_value" />
+
+        <Switch
+            android:id="@+id/switch_native_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/text_pref_native_method" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_preferences">
+
+        <TextView
+            android:id="@+id/text_pref_result"
+            style="@android:style/TextAppearance.Material.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_pref_result_value" />
+
+        <TextView
+            android:id="@+id/text_result"
+            style="@android:style/TextAppearance.Material.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/text_pref_result"
+            android:text="@string/text_result_default_value"
+            android:textAlignment="viewEnd" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button_perform_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/button_perform_test_value" />
+
+</LinearLayout>

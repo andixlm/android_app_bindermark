@@ -3,4 +3,12 @@
 
     <string name="app_name">BinderMark</string>
 
+    <string name="text_pref_size_value">Size (1-512 KB):</string>
+    <string name="text_pref_native_method_value">Native method?</string>
+    <string name="text_pref_result_value">Result (ms):</string>
+
+    <string name="text_result_default_value">null</string>
+
+    <string name="button_perform_test_value">Perform</string>
+
 </resources>
