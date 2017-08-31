@@ -29,6 +29,7 @@ public class BinderMark extends Activity {
 
         mNativeMethod = DEFAULT_NATIVE_METHOD;
         mNativeMethodSwitch = (Switch) findViewById(R.id.switch_native_method);
+        mNativeMethodSwitch.setChecked(mNativeMethod);
 
         mPerformButton = (Button) findViewById(R.id.button_perform_test);
 
