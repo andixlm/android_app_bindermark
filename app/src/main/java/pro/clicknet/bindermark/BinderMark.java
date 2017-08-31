@@ -10,7 +10,10 @@ import android.widget.Toast;
 
 public class BinderMark extends Activity {
 
-    private static final int DEFAULT_SIZE = 1;
+    private static final int MINIMUM_SIZE = 1;
+    private static final int MAXIMUM_SIZE  = 512;
+    private static final int DEFAULT_SIZE = MINIMUM_SIZE;
+
     private static final boolean DEFAULT_NATIVE_METHOD = false;
 
     private int mSize;
@@ -41,7 +44,7 @@ public class BinderMark extends Activity {
                 try {
                     mSize = Integer.parseInt(mSizeText.getText().toString());
 
-                    if (mSize < 1 || mSize > 512) {
+                    if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
                         throw new NumberFormatException("Incorrect size");
                     }
                 } catch (NumberFormatException exc) {
