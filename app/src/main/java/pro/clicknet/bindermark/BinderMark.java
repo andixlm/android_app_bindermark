@@ -54,7 +54,7 @@ public class BinderMark extends Activity {
                     mSize = Integer.parseInt(mSizeText.getText().toString());
 
                     if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
-                        throw new NumberFormatException("Incorrect size");
+                        throw new NumberFormatException("Size is out of allowed bounds");
                     }
                 } catch (NumberFormatException exc) {
                     Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
