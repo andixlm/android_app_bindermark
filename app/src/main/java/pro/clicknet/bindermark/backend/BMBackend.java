@@ -4,7 +4,7 @@ import pro.clicknet.bindermarkcommon.BMResponse;
 
 public class BMBackend {
 
-    private static final int MINIMUM_SIZE = 0;
+    private static final int MINIMUM_SIZE = 1;
     private static final int MAXIMUM_SIZE = 512;
 
     // Size must be set to positive value before performing test.
