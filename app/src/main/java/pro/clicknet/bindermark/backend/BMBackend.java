@@ -17,8 +17,8 @@ public class BMBackend {
     private OnCompleteListener mOnCompleteListener;
 
     public BMBackend() {
-        mSize = DEFAULT_SIZE;
-        mNativeMethod = DEFAULT_NATIVE_METHOD;
+        setSize(DEFAULT_SIZE);
+        setNativeMethod(DEFAULT_NATIVE_METHOD);
     }
 
     public BMBackend(int size, boolean nativeMethod) {
