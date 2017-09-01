@@ -26,6 +26,26 @@ public class BMBackend {
         setNativeMethod(nativeMethod);
     }
 
+    public void perform() throws IllegalStateException {
+        if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
+            throw new IllegalStateException("Size is out of allowed bounds");
+        }
+
+        BMResponse response = mNativeMethod ? performNative() : performVirtual();
+        if (mOnCompleteListener != null) {
+            mOnCompleteListener.onComplete(response);
+        }
+    }
+
+    private BMResponse performVirtual() {
+        return null;
+    }
+
+    private BMResponse performNative() {
+        // TODO: Implement as native method.
+        return null;
+    }
+
     public int getSize() {
         return mSize;
     }
