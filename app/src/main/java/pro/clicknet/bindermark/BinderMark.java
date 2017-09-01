@@ -15,11 +15,11 @@ import pro.clicknet.bindermarkcommon.BMResponse;
 
 public class BinderMark extends Activity {
 
-    private static final int MINIMUM_SIZE = 1;
-    private static final int MAXIMUM_SIZE  = 512;
-    private static final int DEFAULT_SIZE = MINIMUM_SIZE;
+    public static final int MINIMUM_SIZE = 1;
+    public static final int MAXIMUM_SIZE  = 512;
+    public static final int DEFAULT_SIZE = MINIMUM_SIZE;
 
-    private static final boolean DEFAULT_NATIVE_METHOD = false;
+    public static final boolean DEFAULT_NATIVE_METHOD = false;
 
     private int mSize;
     private EditText mSizeText;
