@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import pro.clicknet.bindermark.backend.BMBackend;
+import pro.clicknet.bindermarkcommon.BMResponse;
 
 public class BinderMark extends Activity {
 
@@ -75,6 +76,14 @@ public class BinderMark extends Activity {
         });
 
         mBackend = new BMBackend();
+        mBackend.setOnCompleteListener(new BMBackend.OnCompleteListener() {
+
+            @Override
+            public void onComplete(BMResponse response) {
+                mResultText.setText(String.valueOf(response.getReceiptTime()));
+            }
+
+        });
 
         setContentView(R.layout.bindermark);
     }
