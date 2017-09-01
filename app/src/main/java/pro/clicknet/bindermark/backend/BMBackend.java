@@ -1,15 +1,9 @@
 package pro.clicknet.bindermark.backend;
 
+import pro.clicknet.bindermark.BinderMark;
 import pro.clicknet.bindermarkcommon.BMResponse;
 
 public class BMBackend {
-
-    private static final int MINIMUM_SIZE = 1;
-    private static final int MAXIMUM_SIZE = 512;
-
-    // Size must be set to positive value before performing test.
-    private static final int DEFAULT_SIZE = -1;
-    private static final boolean DEFAULT_NATIVE_METHOD = false;
 
     private int mSize;
     private boolean mNativeMethod;
@@ -17,8 +11,8 @@ public class BMBackend {
     private OnCompleteListener mOnCompleteListener;
 
     public BMBackend() {
-        setSize(DEFAULT_SIZE);
-        setNativeMethod(DEFAULT_NATIVE_METHOD);
+        setSize(BinderMark.DEFAULT_SIZE);
+        setNativeMethod(BinderMark.DEFAULT_NATIVE_METHOD);
     }
 
     public BMBackend(int size, boolean nativeMethod) {
@@ -27,7 +21,7 @@ public class BMBackend {
     }
 
     public void perform() throws IllegalStateException {
-        if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
+        if (mSize < BinderMark.MINIMUM_SIZE || mSize > BinderMark.MAXIMUM_SIZE) {
             throw new IllegalStateException("Size is out of allowed bounds");
         }
 
