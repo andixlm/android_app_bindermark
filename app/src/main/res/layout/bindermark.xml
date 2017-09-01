@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margin_preferences"
@@ -16,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:labelFor="@id/text_size"
             android:text="@string/text_pref_size_value" />
 
         <EditText
@@ -26,7 +26,8 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/text_pref_size"
             android:inputType="numberDecimal"
-            android:textAlignment="viewEnd" />
+            android:textAlignment="viewEnd"
+            tools:ignore="LabelFor" />
 
     </RelativeLayout>
 
