@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import pro.clicknet.bindermark.backend.BMBackend;
+
 public class BinderMark extends Activity {
 
     private static final int MINIMUM_SIZE = 1;
@@ -24,6 +26,8 @@ public class BinderMark extends Activity {
     private Switch mNativeMethodSwitch;
 
     private Button mPerformButton;
+
+    private BMBackend mBackend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +69,16 @@ public class BinderMark extends Activity {
 
         });
 
+        mBackend = new BMBackend();
+
         setContentView(R.layout.bindermark);
     }
 
     private void perform(int size, boolean nativeMethod) {
-        return;
+        mBackend.setSize(size);
+        mBackend.setNativeMethod(nativeMethod);
+
+        mBackend.perform();
     }
 
 }
