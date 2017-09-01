@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -34,6 +35,14 @@ public class BinderMark extends Activity {
 
         mNativeMethod = DEFAULT_NATIVE_METHOD;
         mNativeMethodSwitch = (Switch) findViewById(R.id.switch_native_method);
+        mNativeMethodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mNativeMethod = isChecked;
+            }
+
+        });
         mNativeMethodSwitch.setChecked(mNativeMethod);
 
         mPerformButton = (Button) findViewById(R.id.button_perform_test);
@@ -50,8 +59,6 @@ public class BinderMark extends Activity {
                 } catch (NumberFormatException exc) {
                     Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
-                mNativeMethod = mNativeMethodSwitch.isChecked();
 
                 perform(mSize, mNativeMethod);
             }
