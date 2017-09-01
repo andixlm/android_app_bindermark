@@ -4,12 +4,14 @@ import pro.clicknet.bindermarkcommon.BMResponse;
 
 public class BMBackend {
 
+    private static final boolean DEFAULT_NATIVE_METHOD = false;
+
     private boolean mNativeMethod;
 
     private OnCompleteListener mOnCompleteListener;
 
     public BMBackend() {
-        mNativeMethod = false;
+        mNativeMethod = DEFAULT_NATIVE_METHOD;
     }
 
     public BMBackend(boolean nativeMethod) {
