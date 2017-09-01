@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import pro.clicknet.bindermark.backend.BMBackend;
@@ -24,6 +25,8 @@ public class BinderMark extends Activity {
 
     private boolean mNativeMethod;
     private Switch mNativeMethodSwitch;
+
+    private TextView mResultText;
 
     private Button mPerformButton;
 
@@ -48,6 +51,8 @@ public class BinderMark extends Activity {
 
         });
         mNativeMethodSwitch.setChecked(mNativeMethod);
+
+        mResultText = (TextView) findViewById(R.id.text_result);
 
         mPerformButton = (Button) findViewById(R.id.button_perform_test);
         mPerformButton.setOnClickListener(new View.OnClickListener() {
