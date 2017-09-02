@@ -7,11 +7,11 @@ import pro.clicknet.bindermarkcommon.BMResponse;
 import pro.clicknet.bindermarkcommon.IBMClientService;
 import pro.clicknet.bindermarkserverservice.IBMServerServiceImpl;
 
-public class BMClientService extends IBMClientService.Stub {
+public class IBMClientServiceImpl extends IBMClientService.Stub {
 
     private IBMServerServiceImpl mServer;
 
-    public BMClientService(IBMServerServiceImpl server) throws IllegalArgumentException {
+    public IBMClientServiceImpl(IBMServerServiceImpl server) throws IllegalArgumentException {
         if (server == null) {
             throw new IllegalArgumentException("Server must be non-null");
         }
