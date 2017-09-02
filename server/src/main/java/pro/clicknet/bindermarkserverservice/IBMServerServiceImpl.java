@@ -6,7 +6,7 @@ import pro.clicknet.bindermarkcommon.BMRequest;
 import pro.clicknet.bindermarkcommon.BMResponse;
 import pro.clicknet.bindermarkcommon.IBMServerService;
 
-public class BMServerService extends IBMServerService.Stub {
+public class IBMServerServiceImpl extends IBMServerService.Stub {
 
     @Override
     public BMResponse get(BMRequest request) throws RemoteException {

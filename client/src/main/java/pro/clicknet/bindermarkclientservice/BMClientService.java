@@ -5,13 +5,13 @@ import android.os.RemoteException;
 import pro.clicknet.bindermarkcommon.BMRequest;
 import pro.clicknet.bindermarkcommon.BMResponse;
 import pro.clicknet.bindermarkcommon.IBMClientService;
-import pro.clicknet.bindermarkserverservice.BMServerService;
+import pro.clicknet.bindermarkserverservice.IBMServerServiceImpl;
 
 public class BMClientService extends IBMClientService.Stub {
 
-    private BMServerService mServer;
+    private IBMServerServiceImpl mServer;
 
-    public BMClientService(BMServerService server) throws IllegalArgumentException {
+    public BMClientService(IBMServerServiceImpl server) throws IllegalArgumentException {
         if (server == null) {
             throw new IllegalArgumentException("Server must be non-null");
         }
