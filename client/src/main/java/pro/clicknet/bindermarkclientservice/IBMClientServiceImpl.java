@@ -30,4 +30,16 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
         return response;
     }
 
+    public IBMServerServiceImpl getServer() {
+        return mServer;
+    }
+
+    public void setServer(IBMServerServiceImpl server) throws IllegalArgumentException {
+        if (server == null) {
+            throw new IllegalArgumentException("Server must be non-null");
+        }
+
+        mServer = server;
+    }
+
 }
