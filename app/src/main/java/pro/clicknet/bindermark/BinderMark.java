@@ -80,7 +80,9 @@ public class BinderMark extends Activity {
 
             @Override
             public void onComplete(BMResponse response) {
-                mResultText.setText(String.valueOf(response.getReceiptTime()));
+                mResultText.setText(String.valueOf(
+                        (response == null) ? "null" : response.getReceiptTime()
+                ));
             }
 
         });
