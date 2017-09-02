@@ -11,6 +11,10 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
 
     private IBMServerServiceImpl mServer;
 
+    public IBMClientServiceImpl() {
+        setServer(null);
+    }
+
     public IBMClientServiceImpl(IBMServerServiceImpl server) throws IllegalArgumentException {
         setServer(server);
     }
