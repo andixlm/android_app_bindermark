@@ -2,8 +2,11 @@ package pro.clicknet.bindermark.backend;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.RemoteException;
+import android.widget.Toast;
 
 import pro.clicknet.bindermark.BinderMark;
 import pro.clicknet.bindermarkcommon.BMResponse;
@@ -47,7 +50,44 @@ public class BMBackend {
     }
 
     private BMResponse performVirtual() {
-        return null;
+        BMResponse response;
+
+        try {
+            createServices();
+
+            mClientService.setServer(mServerService);
+            response = mClientService.perform(mSize);
+        } catch (InstantiationException | RemoteException exc) {
+            response = null;
+
+            Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        destroyServices();
+
+        return response;
+    }
+
+    private void createServices() throws InstantiationException {
+        if (!mContext.bindService(new Intent(BMServerService.class.getName()),
+                mServerServiceConnection, Context.BIND_AUTO_CREATE)) {
+            throw new InstantiationException("Can't create server");
+        }
+
+        if (!mContext.bindService(new Intent(BMClientService.class.getName()),
+                mClientServiceConnection, Context.BIND_AUTO_CREATE)) {
+            throw new InstantiationException("Can't create client");
+        }
+    }
+
+    private void destroyServices() {
+        if (mClientService != null) {
+            mContext.unbindService(mClientServiceConnection);
+        }
+
+        if (mServerService != null) {
+            mContext.unbindService(mServerServiceConnection);
+        }
     }
 
     private BMResponse performNative() {
