@@ -4,6 +4,8 @@ import android.content.Context;
 
 import pro.clicknet.bindermark.BinderMark;
 import pro.clicknet.bindermarkcommon.BMResponse;
+import pro.clicknet.bindermarkcommon.IBMClientService;
+import pro.clicknet.bindermarkcommon.IBMServerService;
 
 public class BMBackend {
 
@@ -11,6 +13,9 @@ public class BMBackend {
     private boolean mNativeMethod;
 
     private Context mContext;
+
+    private IBMServerService mServerService;
+    private IBMClientService mClientService;
 
     private OnCompleteListener mOnCompleteListener;
 
