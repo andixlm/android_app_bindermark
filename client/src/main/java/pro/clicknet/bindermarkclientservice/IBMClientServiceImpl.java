@@ -21,6 +21,10 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
 
     @Override
     public BMResponse perform(int size) throws RemoteException {
+        if (mServer == null) {
+            throw new RemoteException("Server is not set");
+        }
+
         BMRequest request = new BMRequest(size);
 
         long startTime = System.currentTimeMillis();
