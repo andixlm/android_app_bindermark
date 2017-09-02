@@ -1,6 +1,9 @@
 package pro.clicknet.bindermark.backend;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
 import pro.clicknet.bindermark.BinderMark;
 import pro.clicknet.bindermarkcommon.BMResponse;
@@ -87,6 +90,34 @@ public class BMBackend {
     public void setOnCompleteListener(OnCompleteListener listener) {
         mOnCompleteListener = listener;
     }
+
+    private ServiceConnection mServerServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mServerService = IBMServerService.Stub.asInterface(iBinder);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mServerService = null;
+        }
+
+    };
+
+    private ServiceConnection mClientServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mClientService = IBMClientService.Stub.asInterface(iBinder);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mClientService = null;
+        }
+
+    };
 
     public interface OnCompleteListener {
 
