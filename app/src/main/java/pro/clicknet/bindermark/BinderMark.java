@@ -75,7 +75,7 @@ public class BinderMark extends Activity {
 
         });
 
-        mBackend = new BMBackend();
+        mBackend = new BMBackend(this);
         mBackend.setOnCompleteListener(new BMBackend.OnCompleteListener() {
 
             @Override
