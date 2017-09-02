@@ -12,11 +12,7 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
     private IBMServerServiceImpl mServer;
 
     public IBMClientServiceImpl(IBMServerServiceImpl server) throws IllegalArgumentException {
-        if (server == null) {
-            throw new IllegalArgumentException("Server must be non-null");
-        }
-
-        mServer = server;
+        setServer(server);
     }
 
     @Override
