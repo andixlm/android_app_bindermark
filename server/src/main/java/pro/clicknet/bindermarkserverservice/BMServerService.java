@@ -4,9 +4,9 @@ import android.os.RemoteException;
 
 import pro.clicknet.bindermarkcommon.BMRequest;
 import pro.clicknet.bindermarkcommon.BMResponse;
-import pro.clicknet.bindermarkcommon.IBinderMarkServerService;
+import pro.clicknet.bindermarkcommon.IBMServerService;
 
-public class BMServerService extends IBinderMarkServerService.Stub {
+public class BMServerService extends IBMServerService.Stub {
 
     @Override
     public BMResponse get(BMRequest request) throws RemoteException {

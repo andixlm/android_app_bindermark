@@ -4,10 +4,10 @@ import android.os.RemoteException;
 
 import pro.clicknet.bindermarkcommon.BMRequest;
 import pro.clicknet.bindermarkcommon.BMResponse;
-import pro.clicknet.bindermarkcommon.IBinderMarkClientService;
+import pro.clicknet.bindermarkcommon.IBMClientService;
 import pro.clicknet.bindermarkserverservice.BMServerService;
 
-public class BMClientService extends IBinderMarkClientService.Stub {
+public class BMClientService extends IBMClientService.Stub {
 
     private BMServerService mServer;
 
