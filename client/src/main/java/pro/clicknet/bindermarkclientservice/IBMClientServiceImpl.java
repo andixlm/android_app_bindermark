@@ -5,18 +5,14 @@ import android.os.RemoteException;
 import pro.clicknet.bindermarkcommon.BMRequest;
 import pro.clicknet.bindermarkcommon.BMResponse;
 import pro.clicknet.bindermarkcommon.IBMClientService;
-import pro.clicknet.bindermarkserverservice.IBMServerServiceImpl;
+import pro.clicknet.bindermarkcommon.IBMServerService;
 
 public class IBMClientServiceImpl extends IBMClientService.Stub {
 
-    private IBMServerServiceImpl mServer;
+    private IBMServerService mServer;
 
     public IBMClientServiceImpl() {
         setServer(null);
-    }
-
-    public IBMClientServiceImpl(IBMServerServiceImpl server) throws IllegalArgumentException {
-        setServer(server);
     }
 
     @Override
@@ -34,11 +30,12 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
         return response;
     }
 
-    public IBMServerServiceImpl getServer() {
+    public IBMServerService getServer() {
         return mServer;
     }
 
-    public void setServer(IBMServerServiceImpl server) throws IllegalArgumentException {
+    @Override
+    public void setServer(IBMServerService server) throws IllegalArgumentException {
         if (server == null) {
             throw new IllegalArgumentException("Server must be non-null");
         }
