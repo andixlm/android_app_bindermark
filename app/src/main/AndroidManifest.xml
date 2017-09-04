@@ -16,6 +16,9 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".backend.BMServerService" />
+        <service android:name=".backend.BMClientService" />
+
     </application>
 
 </manifest>
