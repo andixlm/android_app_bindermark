@@ -26,16 +26,15 @@ public class BMBackend {
     private OnCompleteListener mOnCompleteListener;
 
     public BMBackend(Context context) {
-        setContext(context);
-        setSize(BinderMark.DEFAULT_SIZE);
-        setNativeMethod(BinderMark.DEFAULT_NATIVE_METHOD);
+        mContext = context;
+        mSize = BinderMark.DEFAULT_SIZE;
+        mNativeMethod = BinderMark.DEFAULT_NATIVE_METHOD;
     }
 
     public BMBackend(Context context, int size, boolean nativeMethod) {
-        this(context);
-
-        setSize(size);
-        setNativeMethod(nativeMethod);
+        mContext = context;
+        mSize = size;
+        mNativeMethod = nativeMethod;
     }
 
     public void perform() throws IllegalStateException {
