@@ -29,6 +29,7 @@ public class BinderMark extends Activity {
 
     private TextView mResultText;
 
+    private Button mCreateBackendButton;
     private Button mPerformButton;
 
     private BMBackend mBackend;
@@ -57,6 +58,26 @@ public class BinderMark extends Activity {
         mNativeMethodSwitch.setChecked(mNativeMethod);
 
         mResultText = (TextView) findViewById(R.id.text_result);
+
+        mCreateBackendButton = (Button) findViewById(R.id.button_create_backend);
+        mCreateBackendButton.setEnabled(true);
+        mCreateBackendButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                mBackend.setSize(mSize);
+                mBackend.setNativeMethod(mNativeMethod);
+
+                try {
+                    mBackend.createServices();
+                } catch (InstantiationException exc) {
+                    Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                onServicesBoundChange(true);
+            }
+
+        });
 
         mPerformButton = (Button) findViewById(R.id.button_perform_test);
         mPerformButton.setEnabled(false);
