@@ -126,6 +126,7 @@ public class BinderMark extends Activity {
     private void onServicesBoundChange(boolean servicesBound) {
         mServicesBound = servicesBound;
 
+        mCreateBackendButton.setEnabled(!mServicesBound);
         mPerformButton.setEnabled(mServicesBound);
     }
 
