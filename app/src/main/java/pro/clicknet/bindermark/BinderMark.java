@@ -31,6 +31,7 @@ public class BinderMark extends Activity {
 
     private Button mCreateBackendButton;
     private Button mPerformButton;
+    private Button mDestroyBackendButton;
 
     private BMBackend mBackend;
     private boolean mServicesBound;
@@ -96,6 +97,18 @@ public class BinderMark extends Activity {
                 }
 
                 mBackend.perform();
+            }
+
+        });
+
+        mDestroyBackendButton = (Button) findViewById(R.id.button_destroy_backend);
+        mDestroyBackendButton.setEnabled(false);
+        mDestroyBackendButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                mBackend.destroyServices();
+                onServicesBoundChange(false);
             }
 
         });
