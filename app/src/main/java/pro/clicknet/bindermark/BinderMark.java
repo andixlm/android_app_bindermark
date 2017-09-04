@@ -141,6 +141,7 @@ public class BinderMark extends Activity {
 
         mCreateBackendButton.setEnabled(!mServicesBound);
         mPerformButton.setEnabled(mServicesBound);
+        mDestroyBackendButton.setEnabled(mServicesBound);
     }
 
 }
