@@ -52,17 +52,12 @@ public class BMBackend {
         BMResponse response;
 
         try {
-            createServices();
-
             mClientService.setServer(mServerService);
             response = mClientService.perform(mSize);
-        } catch (InstantiationException | RemoteException exc) {
+        } catch (RemoteException exc) {
             response = null;
-
             Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        destroyServices();
 
         return response;
     }
