@@ -10,7 +10,7 @@
     <string name="text_result_default_value">null</string>
 
     <string name="button_create_backend_value">Create backend</string>
-    <string name="button_perform_test_value">Perform</string>
+    <string name="button_perform_test_value">Perform test</string>
     <string name="button_destroy_backend_value">Destroy backend</string>
 
 </resources>
