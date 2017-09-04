@@ -74,7 +74,7 @@ public class BinderMark extends Activity {
                     Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
-                perform(mSize, mNativeMethod);
+                mBackend.perform();
             }
 
         });
