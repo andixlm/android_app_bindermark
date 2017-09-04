@@ -53,6 +53,9 @@ public class BinderMark extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mNativeMethod = isChecked;
+
+                mBackend.destroyServices();
+                onServicesBoundChange(false);
             }
 
         });
