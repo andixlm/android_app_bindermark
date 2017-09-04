@@ -73,6 +73,10 @@ public class BMBackend {
                 mClientServiceConnection, Context.BIND_AUTO_CREATE)) {
             throw new InstantiationException("Can't create client");
         }
+
+        if (mOnCreateListener != null) {
+            mOnCreateListener.onCreate();
+        }
     }
 
     private void destroyServices() {
