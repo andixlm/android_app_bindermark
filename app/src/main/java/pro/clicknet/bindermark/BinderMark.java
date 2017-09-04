@@ -37,6 +37,8 @@ public class BinderMark extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.bindermark);
+
         mSize = DEFAULT_SIZE;
         mSizeText = (EditText) findViewById(R.id.text_size);
         mSizeText.setText(String.valueOf(mSize));
@@ -86,8 +88,6 @@ public class BinderMark extends Activity {
             }
 
         });
-
-        setContentView(R.layout.bindermark);
     }
 
     private void perform(int size, boolean nativeMethod) {
