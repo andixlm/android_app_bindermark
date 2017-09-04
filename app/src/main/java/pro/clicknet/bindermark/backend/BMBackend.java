@@ -23,6 +23,7 @@ public class BMBackend {
     private IBMServerService mServerService;
     private IBMClientService mClientService;
 
+    private OnCreateListener mOnCreateListener;
     private OnCompleteListener mOnCompleteListener;
 
     public BMBackend(Context context) {
@@ -117,6 +118,14 @@ public class BMBackend {
         mNativeMethod = nativeMethod;
     }
 
+    public OnCreateListener getOnCreateListener() {
+        return mOnCreateListener;
+    }
+
+    public void setOnCreateListener(OnCreateListener listener) {
+        mOnCreateListener = listener;
+    }
+
     public OnCompleteListener getOnCompleteListener() {
         return mOnCompleteListener;
     }
@@ -152,6 +161,12 @@ public class BMBackend {
         }
 
     };
+
+    public interface OnCreateListener {
+
+        void onCreate();
+
+    }
 
     public interface OnCompleteListener {
 
