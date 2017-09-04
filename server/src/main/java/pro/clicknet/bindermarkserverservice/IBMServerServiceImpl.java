@@ -10,7 +10,7 @@ public class IBMServerServiceImpl extends IBMServerService.Stub {
 
     @Override
     public BMResponse get(BMRequest request) throws RemoteException {
-        return new BMResponse(System.currentTimeMillis());
+        return new BMResponse(System.nanoTime());
     }
 
 }
