@@ -84,10 +84,12 @@ public class BMBackend {
     public void destroyServices() {
         if (mClientService != null) {
             mContext.unbindService(mClientServiceConnection);
+            mClientService = null;
         }
 
         if (mServerService != null) {
             mContext.unbindService(mServerServiceConnection);
+            mServerService = null;
         }
     }
 
