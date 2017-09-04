@@ -8,11 +8,11 @@ public class BMRequest implements Parcelable {
     private String mData;
 
     public BMRequest(String data) {
-        setData(data);
+        mData = data;
     }
 
     public BMRequest(int size) {
-        setData(generateString(size));
+        mData = generateString(size);
     }
 
     /*
