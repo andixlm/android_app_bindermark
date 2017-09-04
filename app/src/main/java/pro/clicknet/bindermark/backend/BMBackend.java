@@ -63,7 +63,7 @@ public class BMBackend {
         return response;
     }
 
-    private void createServices() throws InstantiationException {
+    public void createServices() throws InstantiationException {
         if (!mContext.bindService(new Intent(BMServerService.class.getName()),
                 mServerServiceConnection, Context.BIND_AUTO_CREATE)) {
             throw new InstantiationException("Can't create server");
@@ -79,7 +79,7 @@ public class BMBackend {
         }
     }
 
-    private void destroyServices() {
+    public void destroyServices() {
         if (mClientService != null) {
             mContext.unbindService(mClientServiceConnection);
         }
