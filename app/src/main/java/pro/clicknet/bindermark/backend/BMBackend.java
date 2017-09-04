@@ -64,13 +64,15 @@ public class BMBackend {
     }
 
     public void createServices() throws InstantiationException {
-        if (!mContext.bindService(new Intent(BMServerService.class.getName()),
-                mServerServiceConnection, Context.BIND_AUTO_CREATE)) {
+        Intent serverIntent = new Intent(mContext, BMServerService.class);
+        if (!mContext.bindService(serverIntent, mServerServiceConnection,
+                Context.BIND_AUTO_CREATE)) {
             throw new InstantiationException("Can't create server");
         }
 
-        if (!mContext.bindService(new Intent(BMClientService.class.getName()),
-                mClientServiceConnection, Context.BIND_AUTO_CREATE)) {
+        Intent clientIntent = new Intent(mContext, BMClientService.class);
+        if (!mContext.bindService(clientIntent, mClientServiceConnection,
+                Context.BIND_AUTO_CREATE)) {
             throw new InstantiationException("Can't create client");
         }
 
