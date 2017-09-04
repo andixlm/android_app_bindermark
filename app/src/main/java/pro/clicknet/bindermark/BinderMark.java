@@ -32,6 +32,7 @@ public class BinderMark extends Activity {
     private Button mPerformButton;
 
     private BMBackend mBackend;
+    private boolean mServicesBound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,8 @@ public class BinderMark extends Activity {
             }
 
         });
+
+        mServicesBound = false;
     }
 
     private void perform(int size, boolean nativeMethod) {
