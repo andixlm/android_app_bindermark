@@ -8,7 +8,7 @@ public class BMResponse implements Parcelable {
     private long mReceiptTime;
 
     public BMResponse(long receiptTime) {
-        setReceiptTime(receiptTime);
+        mReceiptTime = receiptTime;
     }
 
     @Override
