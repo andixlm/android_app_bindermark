@@ -12,7 +12,7 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
     private IBMServerService mServer;
 
     public IBMClientServiceImpl() {
-        setServer(null);
+        mServer = null;
     }
 
     @Override
