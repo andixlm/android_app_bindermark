@@ -100,9 +100,6 @@ public class BinderMark extends Activity {
     }
 
     private void perform(int size, boolean nativeMethod) {
-        mBackend.setSize(size);
-        mBackend.setNativeMethod(nativeMethod);
-
         mBackend.perform();
     }
 
