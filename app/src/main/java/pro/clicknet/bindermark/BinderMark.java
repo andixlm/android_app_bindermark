@@ -58,6 +58,7 @@ public class BinderMark extends Activity {
         mResultText = (TextView) findViewById(R.id.text_result);
 
         mPerformButton = (Button) findViewById(R.id.button_perform_test);
+        mPerformButton.setEnabled(false);
         mPerformButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
