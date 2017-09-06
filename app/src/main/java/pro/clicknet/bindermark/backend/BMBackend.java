@@ -9,6 +9,8 @@ import android.os.RemoteException;
 import android.widget.Toast;
 
 import pro.clicknet.bindermark.BinderMark;
+import pro.clicknet.bindermark.backend.virtual.BMClientService;
+import pro.clicknet.bindermark.backend.virtual.BMServerService;
 import pro.clicknet.bindermarkcommon.BMResponse;
 import pro.clicknet.bindermarkcommon.IBMClientService;
 import pro.clicknet.bindermarkcommon.IBMServerService;

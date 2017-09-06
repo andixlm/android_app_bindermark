@@ -1,21 +1,21 @@
-package pro.clicknet.bindermark.backend;
+package pro.clicknet.bindermark.backend.virtual;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import pro.clicknet.bindermarkserverservice.IBMServerServiceImpl;
+import pro.clicknet.bindermarkclientservice.IBMClientServiceImpl;
 
-public class BMServerService extends Service {
+public class BMClientService extends Service {
 
-    private IBMServerServiceImpl mService;
+    private IBMClientServiceImpl mService;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mService = new IBMServerServiceImpl();
+        mService = new IBMClientServiceImpl();
     }
 
     @Override
