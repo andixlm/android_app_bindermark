@@ -25,7 +25,8 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
 
         long startTime = System.currentTimeMillis();
         BMResponse response = mServer.get(request);
-        long endTime = System.currentTimeMillis();
+
+        response.setReceiptTime(response.getReceiptTime() - startTime);
 
         return response;
     }
