@@ -40,6 +40,10 @@ public class BMBackend {
     public BMBackend(Context context, int size, boolean nativeMethod) {
         this(context);
 
+        if (size < BinderMark.MINIMUM_SIZE || size > BinderMark.MAXIMUM_SIZE) {
+            throw new IllegalStateException("Size is out of allowed bounds");
+        }
+
         mSize = size;
         mNativeMethod = nativeMethod;
     }
@@ -69,10 +73,6 @@ public class BMBackend {
     }
 
     public void perform() throws IllegalStateException {
-        if (mSize < BinderMark.MINIMUM_SIZE || mSize > BinderMark.MAXIMUM_SIZE) {
-            throw new IllegalStateException("Size is out of allowed bounds");
-        }
-
         BMResponse response = mNativeMethod ? mNativeBackend.perform() : mVirtualBackend.perform();
         if (mOnCompleteListener != null) {
             mOnCompleteListener.onComplete(response);
