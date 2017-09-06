@@ -20,8 +20,8 @@ public class BMBackend {
 
     private Context mContext;
 
-    private IBMServerService mServerService;
-    private IBMClientService mClientService;
+    private NativeBackend mNativeBackend;
+    private VirtualBackend mVirtualBackend;
 
     private OnCreateListener mOnCreateListener;
     private OnCompleteListener mOnCompleteListener;
@@ -30,50 +30,27 @@ public class BMBackend {
         mContext = context;
         mSize = BinderMark.DEFAULT_SIZE;
         mNativeMethod = BinderMark.DEFAULT_NATIVE_METHOD;
+
+        mNativeBackend = new NativeBackend();
+        mVirtualBackend = new VirtualBackend(context);
     }
 
     public BMBackend(Context context, int size, boolean nativeMethod) {
-        mContext = context;
+        this(context);
+
         mSize = size;
         mNativeMethod = nativeMethod;
     }
 
-    public void perform() throws IllegalStateException {
-        if (mSize < BinderMark.MINIMUM_SIZE || mSize > BinderMark.MAXIMUM_SIZE) {
-            throw new IllegalStateException("Size is out of allowed bounds");
-        }
-
-        BMResponse response = mNativeMethod ? performNative() : performVirtual();
-        if (mOnCompleteListener != null) {
-            mOnCompleteListener.onComplete(response);
-        }
-    }
-
-    private BMResponse performVirtual() {
-        BMResponse response;
-
+    public void create() {
         try {
-            mClientService.setServer(mServerService);
-            response = mClientService.perform(mSize);
-        } catch (RemoteException exc) {
-            response = null;
+            if (mNativeMethod) {
+                mNativeBackend.create();
+            } else {
+                mVirtualBackend.create();
+            }
+        } catch (InstantiationException exc) {
             Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        return response;
-    }
-
-    public void createServices() throws InstantiationException {
-        Intent serverIntent = new Intent(mContext, BMServerService.class);
-        if (!mContext.bindService(serverIntent, mServerServiceConnection,
-                Context.BIND_AUTO_CREATE)) {
-            throw new InstantiationException("Can't create server");
-        }
-
-        Intent clientIntent = new Intent(mContext, BMClientService.class);
-        if (!mContext.bindService(clientIntent, mClientServiceConnection,
-                Context.BIND_AUTO_CREATE)) {
-            throw new InstantiationException("Can't create client");
         }
 
         if (mOnCreateListener != null) {
@@ -81,21 +58,23 @@ public class BMBackend {
         }
     }
 
-    public void destroyServices() {
-        if (mClientService != null) {
-            mContext.unbindService(mClientServiceConnection);
-            mClientService = null;
-        }
-
-        if (mServerService != null) {
-            mContext.unbindService(mServerServiceConnection);
-            mServerService = null;
+    public void destroy() {
+        if (mNativeMethod) {
+            mNativeBackend.destroy();
+        } else {
+            mVirtualBackend.destroy();
         }
     }
 
-    private BMResponse performNative() {
-        // TODO: Implement as native method.
-        return null;
+    public void perform() throws IllegalStateException {
+        if (mSize < BinderMark.MINIMUM_SIZE || mSize > BinderMark.MAXIMUM_SIZE) {
+            throw new IllegalStateException("Size is out of allowed bounds");
+        }
+
+        BMResponse response = mNativeMethod ? mNativeBackend.perform() : mVirtualBackend.perform();
+        if (mOnCompleteListener != null) {
+            mOnCompleteListener.onComplete(response);
+        }
     }
 
     public Context getContext() {
@@ -142,33 +121,105 @@ public class BMBackend {
         mOnCompleteListener = listener;
     }
 
-    private ServiceConnection mServerServiceConnection = new ServiceConnection() {
+    private class NativeBackend {
 
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            mServerService = IBMServerService.Stub.asInterface(iBinder);
+        public void create() {
+
         }
 
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
+        public void destroy() {
+
+        }
+
+        public BMResponse perform() {
+            return null;
+        }
+
+    }
+
+    private class VirtualBackend {
+
+        private Context mContext;
+
+        private IBMServerService mServerService;
+        private IBMClientService mClientService;
+
+        public VirtualBackend(Context context) {
+            mContext = context;
+
             mServerService = null;
-        }
-
-    };
-
-    private ServiceConnection mClientServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            mClientService = IBMClientService.Stub.asInterface(iBinder);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
             mClientService = null;
         }
 
-    };
+        public void create() throws InstantiationException {
+            Intent serverIntent = new Intent(mContext, BMServerService.class);
+            if (!mContext.bindService(serverIntent, mServerServiceConnection,
+                    Context.BIND_AUTO_CREATE)) {
+                throw new InstantiationException("Can't create server");
+            }
+
+            Intent clientIntent = new Intent(mContext, BMClientService.class);
+            if (!mContext.bindService(clientIntent, mClientServiceConnection,
+                    Context.BIND_AUTO_CREATE)) {
+                throw new InstantiationException("Can't create client");
+            }
+        }
+
+        public void destroy() {
+            if (mClientService != null) {
+                mContext.unbindService(mClientServiceConnection);
+                mClientService = null;
+            }
+
+            if (mServerService != null) {
+                mContext.unbindService(mServerServiceConnection);
+                mServerService = null;
+            }
+        }
+
+        public BMResponse perform() {
+            BMResponse response;
+
+            try {
+                mClientService.setServer(mServerService);
+                response = mClientService.perform(mSize);
+            } catch (RemoteException exc) {
+                response = null;
+                Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            return response;
+        }
+
+        private ServiceConnection mServerServiceConnection = new ServiceConnection() {
+
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder service) {
+                mServerService = IBMServerService.Stub.asInterface(service);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                mServerService = null;
+            }
+
+        };
+
+        private ServiceConnection mClientServiceConnection = new ServiceConnection() {
+
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder service) {
+                mClientService = IBMClientService.Stub.asInterface(service);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                mClientService = null;
+            }
+
+        };
+
+    }
 
     public interface OnCreateListener {
 

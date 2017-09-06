@@ -54,7 +54,7 @@ public class BinderMark extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mNativeMethod = isChecked;
 
-                mBackend.destroyServices();
+                mBackend.destroy();
                 onServicesBoundChange(false);
             }
 
@@ -72,12 +72,7 @@ public class BinderMark extends Activity {
                 mBackend.setSize(mSize);
                 mBackend.setNativeMethod(mNativeMethod);
 
-                try {
-                    mBackend.createServices();
-                } catch (InstantiationException exc) {
-                    Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
+                mBackend.create();
                 onServicesBoundChange(true);
             }
 
@@ -110,7 +105,7 @@ public class BinderMark extends Activity {
 
             @Override
             public void onClick(View view) {
-                mBackend.destroyServices();
+                mBackend.destroy();
                 onServicesBoundChange(false);
             }
 
