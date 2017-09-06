@@ -181,7 +181,6 @@ public class BMBackend {
             BMResponse response;
 
             try {
-                mClientService.setServer(mServerService);
                 response = mClientService.perform(mSize);
             } catch (RemoteException exc) {
                 response = null;
@@ -210,6 +209,13 @@ public class BMBackend {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder service) {
                 mClientService = IBMClientService.Stub.asInterface(service);
+
+                try {
+                    // Server must be created in advance.
+                    mClientService.setServer(mServerService);
+                } catch (RemoteException exc) {
+                    Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
