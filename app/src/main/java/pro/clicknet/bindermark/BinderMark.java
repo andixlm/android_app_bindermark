@@ -90,6 +90,17 @@ public class BinderMark extends Activity {
 
             @Override
             public void onClick(View view) {
+                try {
+                    mSize = Integer.parseInt(mSizeText.getText().toString());
+
+                    if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
+                        throw new NumberFormatException("Size is out of allowed bounds");
+                    }
+                } catch (NumberFormatException exc) {
+                    Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mBackend.setSize(mSize);
                 mBackend.setNativeMethod(mNativeMethod);
 
@@ -105,16 +116,6 @@ public class BinderMark extends Activity {
 
             @Override
             public void onClick(View view) {
-                try {
-                    mSize = Integer.parseInt(mSizeText.getText().toString());
-
-                    if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
-                        throw new NumberFormatException("Size is out of allowed bounds");
-                    }
-                } catch (NumberFormatException exc) {
-                    Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
                 mBackend.perform();
             }
 
