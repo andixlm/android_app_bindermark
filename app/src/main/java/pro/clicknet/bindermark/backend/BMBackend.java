@@ -20,8 +20,8 @@ public class BMBackend {
 
     private Context mContext;
 
-    private NativeBackend mNativeBackend;
-    private VirtualBackend mVirtualBackend;
+    private Native mNativeBackend;
+    private Virtual mVirtualBackend;
 
     private OnCreateListener mOnCreateListener;
     private OnCompleteListener mOnCompleteListener;
@@ -31,8 +31,8 @@ public class BMBackend {
         mSize = BinderMark.DEFAULT_SIZE;
         mNativeMethod = BinderMark.DEFAULT_NATIVE_METHOD;
 
-        mNativeBackend = new NativeBackend();
-        mVirtualBackend = new VirtualBackend(context);
+        mNativeBackend = new Native();
+        mVirtualBackend = new Virtual(context);
     }
 
     public BMBackend(Context context, int size, boolean nativeMethod) {
@@ -121,7 +121,7 @@ public class BMBackend {
         mOnCompleteListener = listener;
     }
 
-    private class NativeBackend {
+    private class Native {
 
         public void create() {
 
@@ -137,14 +137,14 @@ public class BMBackend {
 
     }
 
-    private class VirtualBackend {
+    private class Virtual {
 
         private Context mContext;
 
         private IBMServerService mServerService;
         private IBMClientService mClientService;
 
-        public VirtualBackend(Context context) {
+        public Virtual(Context context) {
             mContext = context;
 
             mServerService = null;
