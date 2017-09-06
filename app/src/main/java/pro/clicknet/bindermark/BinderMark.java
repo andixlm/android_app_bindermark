@@ -2,6 +2,8 @@ package pro.clicknet.bindermark;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -45,6 +47,25 @@ public class BinderMark extends Activity {
         mSize = DEFAULT_SIZE;
         mSizeText = (EditText) findViewById(R.id.text_size);
         mSizeText.setText(String.valueOf(mSize));
+        mSizeText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mBackend.destroy();
+                onServicesBoundChange(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+        });
 
         mNativeMethod = DEFAULT_NATIVE_METHOD;
         mNativeMethodSwitch = (Switch) findViewById(R.id.switch_native_method);
