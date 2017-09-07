@@ -183,7 +183,7 @@ public class BMBackend {
             BMResponse response;
 
             try {
-                response = mClientService.perform(mSize);
+                response = mClientService.perform();
             } catch (RemoteException exc) {
                 response = null;
                 Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
@@ -214,7 +214,7 @@ public class BMBackend {
 
                 try {
                     // Server must be created in advance.
-                    mClientService.setServer(mServerService);
+                    mClientService.setup(mSize, mServerService);
                 } catch (RemoteException exc) {
                     Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
                 }

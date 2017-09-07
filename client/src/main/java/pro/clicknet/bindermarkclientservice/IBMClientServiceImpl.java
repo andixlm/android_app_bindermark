@@ -9,6 +9,9 @@ import pro.clicknet.bindermarkcommon.IBMServerService;
 
 public class IBMClientServiceImpl extends IBMClientService.Stub {
 
+    private int mSize;
+    private BMRequest mRequest;
+
     private IBMServerService mServer;
 
     public IBMClientServiceImpl() {
@@ -16,32 +19,25 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
     }
 
     @Override
-    public BMResponse perform(int size) throws RemoteException {
+    public void setup(int size, IBMServerService server) {
+        mSize = size;
+        mServer = server;
+
+        mRequest = new BMRequest(mSize);
+    }
+
+    @Override
+    public BMResponse perform() throws RemoteException {
         if (mServer == null) {
             throw new RemoteException("Server is not set");
         }
 
-        BMRequest request = new BMRequest(size);
-
         long startTime = System.nanoTime();
-        BMResponse response = mServer.get(request);
+        BMResponse response = mServer.get(mRequest);
 
         response.setReceiptTime(response.getReceiptTime() - startTime);
 
         return response;
-    }
-
-    public IBMServerService getServer() {
-        return mServer;
-    }
-
-    @Override
-    public void setServer(IBMServerService server) throws IllegalArgumentException {
-        if (server == null) {
-            throw new IllegalArgumentException("Server must be non-null");
-        }
-
-        mServer = server;
     }
 
 }
