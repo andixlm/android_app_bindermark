@@ -21,6 +21,8 @@ public class BinderMark extends Activity {
     public static final int MAXIMUM_SIZE  = 512;
     public static final int DEFAULT_SIZE = MINIMUM_SIZE;
 
+    public static final int TEST_ITERATIONS = 10;
+
     public static final boolean DEFAULT_NATIVE_METHOD = false;
 
     private int mSize;
@@ -29,6 +31,7 @@ public class BinderMark extends Activity {
     private boolean mNativeMethod;
     private Switch mNativeMethodSwitch;
 
+    private long mResult;
     private TextView mResultText;
 
     private Button mCreateBackendButton;
@@ -116,7 +119,16 @@ public class BinderMark extends Activity {
 
             @Override
             public void onClick(View view) {
-                mBackend.perform();
+                mResult = 0;
+
+                for (int count = 0; count < TEST_ITERATIONS; ++count) {
+                    mBackend.perform();
+                }
+
+                // mResult changes in backend OnComplete listener.
+                mResult /= TEST_ITERATIONS;
+
+                mResultText.setText(String.valueOf(mResult));
             }
 
         });
@@ -146,9 +158,7 @@ public class BinderMark extends Activity {
 
             @Override
             public void onComplete(BMResponse response) {
-                mResultText.setText(String.valueOf(
-                        (response == null) ? "null" : response.getReceiptTime()
-                ));
+                mResult += (response != null) ? response.getReceiptTime() : 0;
             }
 
         });
