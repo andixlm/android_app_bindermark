@@ -1,6 +1,7 @@
 package pro.clicknet.bindermark;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -125,31 +126,44 @@ public class BinderMark extends Activity {
 
             @Override
             public void onClick(View view) {
-                mResult = 0;
 
-                for (mResultsIdx = 0; mResultsIdx < TEST_ITERATIONS; ++mResultsIdx) {
-                    mBackend.perform();
-                    mResult += mResults[mResultsIdx];
-                }
+                new AsyncTask<Void, Void, Void>() {
 
-                mResult /= TEST_ITERATIONS;
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        mResult = 0;
 
-                double deviationSum = 0.0;
-                for (int idx = 0; idx < TEST_ITERATIONS; ++idx) {
-                    deviationSum += Math.pow(mResults[idx] - (double) mResult, 2.0);
-                }
+                        for (mResultsIdx = 0; mResultsIdx < TEST_ITERATIONS; ++mResultsIdx) {
+                            mBackend.perform();
+                            mResult += mResults[mResultsIdx];
+                        }
 
-                mDeviation = Math.round(Math.sqrt(deviationSum / (double) TEST_ITERATIONS));
+                        mResult /= TEST_ITERATIONS;
 
-                mResultText.setText(
-                        String.format(Locale.getDefault(), "Results:\n\t" +
-                                        "Size: %d\n\t" +
-                                        "Native method: %s\n\t" +
-                                        "Average (ns): %d\n\t" +
-                                        "Deviation (ns): %d\n\t",
-                                mSize, String.valueOf(mNativeMethod), mResult, mDeviation
-                        )
-                );
+                        double deviationSum = 0.0;
+                        for (int idx = 0; idx < TEST_ITERATIONS; ++idx) {
+                            deviationSum += Math.pow(mResults[idx] - (double) mResult, 2.0);
+                        }
+
+                        mDeviation = Math.round(Math.sqrt(deviationSum / (double) TEST_ITERATIONS));
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        mResultText.setText(
+                                String.format(Locale.getDefault(), "Results:\n\t" +
+                                                "Size: %d\n\t" +
+                                                "Native method: %s\n\t" +
+                                                "Average (ns): %d\n\t" +
+                                                "Deviation (ns): %d\n\t",
+                                        mSize, String.valueOf(mNativeMethod), mResult, mDeviation
+                                )
+                        );
+                    }
+
+                }.execute();
             }
 
         });
