@@ -12,6 +12,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import pro.clicknet.bindermark.backend.BMBackend;
 import pro.clicknet.bindermarkcommon.BMResponse;
 
@@ -130,7 +132,15 @@ public class BinderMark extends Activity {
 
                 mResult /= TEST_ITERATIONS;
 
-                mResultText.setText(String.valueOf(mResult));
+                mResultText.setText(
+                        String.format(Locale.getDefault(), "Results:\n\t" +
+                                        "Size: %d\n\t" +
+                                        "Native method: %s\n\t" +
+                                        "Average (ns): %d\n\t" +
+                                        "Deviation (ns): null\n\t",
+                                mSize, String.valueOf(mNativeMethod), mResult
+                        )
+                );
             }
 
         });
