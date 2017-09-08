@@ -2,6 +2,7 @@ package pro.clicknet.bindermark;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -34,6 +35,7 @@ public class BinderMark extends Activity {
     private Switch mNativeMethodSwitch;
 
     private long mResult;
+    private long mDeviation;
     private long[] mResults;
     private int mResultsIdx;
     private TextView mResultText;
@@ -132,13 +134,20 @@ public class BinderMark extends Activity {
 
                 mResult /= TEST_ITERATIONS;
 
+                double deviationSum = 0.0;
+                for (int idx = 0; idx < TEST_ITERATIONS; ++idx) {
+                    deviationSum += Math.pow(mResults[idx] - (double) mResult, 2.0);
+                }
+
+                mDeviation = Math.round(Math.sqrt(deviationSum / (double) TEST_ITERATIONS));
+
                 mResultText.setText(
                         String.format(Locale.getDefault(), "Results:\n\t" +
                                         "Size: %d\n\t" +
                                         "Native method: %s\n\t" +
                                         "Average (ns): %d\n\t" +
-                                        "Deviation (ns): null\n\t",
-                                mSize, String.valueOf(mNativeMethod), mResult
+                                        "Deviation (ns): %d\n\t",
+                                mSize, String.valueOf(mNativeMethod), mResult, mDeviation
                         )
                 );
             }
