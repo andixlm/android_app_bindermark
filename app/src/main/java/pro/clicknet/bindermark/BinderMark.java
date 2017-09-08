@@ -176,6 +176,8 @@ public class BinderMark extends Activity {
         mCreateBackendButton.setEnabled(!mServicesBound);
         mPerformButton.setEnabled(mServicesBound);
         mDestroyBackendButton.setEnabled(mServicesBound);
+
+        mResultText.setText(getString(R.string.text_result_default_value));
     }
 
 }
