@@ -5,7 +5,6 @@
 
     <string name="text_pref_size_value">Size (1-512 KB):</string>
     <string name="text_pref_native_method_value">Native method?</string>
-    <string name="text_pref_result_value">Result (ns):</string>
 
     <string name="text_result_default_value">null</string>
 
