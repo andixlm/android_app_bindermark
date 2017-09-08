@@ -32,6 +32,8 @@ public class BinderMark extends Activity {
     private Switch mNativeMethodSwitch;
 
     private long mResult;
+    private long[] mResults;
+    private int mResultsIdx;
     private TextView mResultText;
 
     private Button mCreateBackendButton;
@@ -121,11 +123,11 @@ public class BinderMark extends Activity {
             public void onClick(View view) {
                 mResult = 0;
 
-                for (int count = 0; count < TEST_ITERATIONS; ++count) {
+                for (mResultsIdx = 0; mResultsIdx < TEST_ITERATIONS; ++mResultsIdx) {
                     mBackend.perform();
+                    mResult += mResults[mResultsIdx];
                 }
 
-                // mResult changes in backend OnComplete listener.
                 mResult /= TEST_ITERATIONS;
 
                 mResultText.setText(String.valueOf(mResult));
@@ -158,12 +160,14 @@ public class BinderMark extends Activity {
 
             @Override
             public void onComplete(BMResponse response) {
-                mResult += (response != null) ? response.getReceiptTime() : 0;
+                // mResultsIdx is updated in Perform button click.
+                mResults[mResultsIdx] = (response != null) ? response.getReceiptTime() : 0;
             }
 
         });
 
         mServicesBound = false;
+        mResults = new long[TEST_ITERATIONS];
     }
 
     private void onServicesBoundChange(boolean servicesBound) {
