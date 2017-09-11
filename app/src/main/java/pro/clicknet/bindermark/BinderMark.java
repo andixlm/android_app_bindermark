@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,8 @@ public class BinderMark extends Activity {
     private long[] mResults;
     private int mResultsIdx;
     private TextView mResultText;
+
+    private ProgressBar mProgressBar;
 
     private Button mCreateBackendButton;
     private Button mPerformButton;
@@ -94,6 +97,9 @@ public class BinderMark extends Activity {
 
         mResultText = (TextView) findViewById(R.id.text_result);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgressBar.setMax(TEST_ITERATIONS);
+
         mCreateBackendButton = (Button) findViewById(R.id.button_create_backend);
         mCreateBackendButton.setEnabled(true);
         mCreateBackendButton.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +133,17 @@ public class BinderMark extends Activity {
             @Override
             public void onClick(View view) {
 
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Integer, Void>() {
+
+                    @Override
+                    protected void onPreExecute() {
+                        mPerformButton.setEnabled(false);
+                        mDestroyBackendButton.setEnabled(false);
+
+                        mProgressBar.setProgress(0);
+
+                        mResultText.setText(R.string.text_result_default_value);
+                    }
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -136,6 +152,8 @@ public class BinderMark extends Activity {
                         for (mResultsIdx = 0; mResultsIdx < TEST_ITERATIONS; ++mResultsIdx) {
                             mBackend.perform();
                             mResult += mResults[mResultsIdx];
+
+                            publishProgress(mResultsIdx + 1);
                         }
 
                         mResult /= TEST_ITERATIONS;
@@ -151,7 +169,15 @@ public class BinderMark extends Activity {
                     }
 
                     @Override
+                    protected void onProgressUpdate(Integer... values) {
+                        mProgressBar.setProgress(values[0]);
+                    }
+
+                    @Override
                     protected void onPostExecute(Void result) {
+                        mPerformButton.setEnabled(true);
+                        mDestroyBackendButton.setEnabled(true);
+
                         mResultText.setText(
                                 String.format(Locale.getDefault(), "Results:\n\t" +
                                                 "Size: %d\n\t" +
@@ -209,6 +235,8 @@ public class BinderMark extends Activity {
         mCreateBackendButton.setEnabled(!mServicesBound);
         mPerformButton.setEnabled(mServicesBound);
         mDestroyBackendButton.setEnabled(mServicesBound);
+
+        mProgressBar.setProgress(0);
 
         mResultText.setText(getString(R.string.text_result_default_value));
     }
