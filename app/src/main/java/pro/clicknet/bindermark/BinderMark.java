@@ -25,12 +25,17 @@ public class BinderMark extends AppCompatActivity {
     public static final int MAXIMUM_SIZE = 512;
     public static final int DEFAULT_SIZE = MINIMUM_SIZE;
 
-    public static final int TEST_ITERATIONS = 10;
+    public static final int MINIMUM_TRANSACTIONS_AMOUNT = 1;
+    public static final int MAXIMUM_TRANSACTIONS_AMOUNT = 1000000;
+    public static final int DEFAULT_TRANSACTIONS_AMOUNT = 100;
 
     public static final boolean DEFAULT_NATIVE_METHOD = false;
 
     private int mSize;
     private EditText mSizeText;
+
+    private int mTransactionsAmount;
+    private EditText mTransactionsAmountText;
 
     private boolean mNativeMethod;
     private Switch mNativeMethodSwitch;
@@ -79,6 +84,29 @@ public class BinderMark extends AppCompatActivity {
 
         });
 
+        mTransactionsAmount = DEFAULT_TRANSACTIONS_AMOUNT;
+        mTransactionsAmountText = (EditText) findViewById(R.id.text_transactions_amount);
+        mTransactionsAmountText.setText(String.valueOf(mTransactionsAmount));
+        mTransactionsAmountText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mBackend.destroy();
+                onServicesBoundChange(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+        });
+
         mNativeMethod = DEFAULT_NATIVE_METHOD;
         mNativeMethodSwitch = (Switch) findViewById(R.id.switch_native_method);
         mNativeMethodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -97,7 +125,7 @@ public class BinderMark extends AppCompatActivity {
         mResultText = (TextView) findViewById(R.id.text_result);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgressBar.setMax(TEST_ITERATIONS);
+        mProgressBar.setMax(DEFAULT_TRANSACTIONS_AMOUNT);
 
         mCreateBackendButton = (Button) findViewById(R.id.button_create_backend);
         mCreateBackendButton.setEnabled(true);
@@ -111,10 +139,21 @@ public class BinderMark extends AppCompatActivity {
                     if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
                         throw new NumberFormatException("Size is out of allowed bounds");
                     }
+
+                    mTransactionsAmount = Integer.parseInt(mTransactionsAmountText.getText().toString());
+
+                    if (mTransactionsAmount < MINIMUM_TRANSACTIONS_AMOUNT ||
+                            mTransactionsAmount > MAXIMUM_TRANSACTIONS_AMOUNT) {
+                        throw new NumberFormatException("Transactions amount is out of allowed bounds");
+                    }
                 } catch (NumberFormatException exc) {
                     Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                mResults = new long[mTransactionsAmount];
+
+                mProgressBar.setMax(mTransactionsAmount);
 
                 mBackend.setSize(mSize);
                 mBackend.setNativeMethod(mNativeMethod);
@@ -148,21 +187,21 @@ public class BinderMark extends AppCompatActivity {
                     protected Void doInBackground(Void... params) {
                         mResult = 0;
 
-                        for (mResultsIdx = 0; mResultsIdx < TEST_ITERATIONS; ++mResultsIdx) {
+                        for (mResultsIdx = 0; mResultsIdx < mTransactionsAmount; ++mResultsIdx) {
                             mBackend.perform();
                             mResult += mResults[mResultsIdx];
 
                             publishProgress(mResultsIdx + 1);
                         }
 
-                        mResult /= TEST_ITERATIONS;
+                        mResult /= mTransactionsAmount;
 
                         double deviationSum = 0.0;
-                        for (int idx = 0; idx < TEST_ITERATIONS; ++idx) {
+                        for (int idx = 0; idx < mTransactionsAmount; ++idx) {
                             deviationSum += Math.pow(mResults[idx] - (double) mResult, 2.0);
                         }
 
-                        mDeviation = Math.round(Math.sqrt(deviationSum / (double) TEST_ITERATIONS));
+                        mDeviation = Math.round(Math.sqrt(deviationSum / (double) mTransactionsAmount));
 
                         return null;
                     }
@@ -185,7 +224,7 @@ public class BinderMark extends AppCompatActivity {
                                                 "Average (ns): %d\n\t" +
                                                 "Deviation (ns): %d\n\t",
                                         mSize, String.valueOf(mNativeMethod),
-                                        TEST_ITERATIONS, mResult, mDeviation
+                                        mTransactionsAmount, mResult, mDeviation
                                 )
                         );
                     }
@@ -227,7 +266,6 @@ public class BinderMark extends AppCompatActivity {
         });
 
         mServicesBound = false;
-        mResults = new long[TEST_ITERATIONS];
     }
 
     private void onServicesBoundChange(boolean servicesBound) {
