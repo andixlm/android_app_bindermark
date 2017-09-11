@@ -3,7 +3,6 @@ package pro.clicknet.bindermark;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -23,7 +22,7 @@ import pro.clicknet.bindermarkcommon.BMResponse;
 public class BinderMark extends Activity {
 
     public static final int MINIMUM_SIZE = 1;
-    public static final int MAXIMUM_SIZE  = 512;
+    public static final int MAXIMUM_SIZE = 512;
     public static final int DEFAULT_SIZE = MINIMUM_SIZE;
 
     public static final int TEST_ITERATIONS = 10;
