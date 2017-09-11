@@ -1,8 +1,8 @@
 package pro.clicknet.bindermark;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -19,7 +19,7 @@ import java.util.Locale;
 import pro.clicknet.bindermark.backend.BMBackend;
 import pro.clicknet.bindermarkcommon.BMResponse;
 
-public class BinderMark extends Activity {
+public class BinderMark extends AppCompatActivity {
 
     public static final int MINIMUM_SIZE = 1;
     public static final int MAXIMUM_SIZE = 512;
