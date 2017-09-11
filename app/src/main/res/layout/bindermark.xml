@@ -37,6 +37,31 @@
         android:layout_marginBottom="@dimen/margin_preferences">
 
         <TextView
+            android:id="@+id/text_pref_transactions_amount"
+            style="@android:style/TextAppearance.Material.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_pref_transactions_amount" />
+
+        <EditText
+            android:id="@+id/text_transactions_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/text_pref_transactions_amount"
+            android:inputType="numberDecimal"
+            android:textAlignment="viewEnd"
+            tools:ignore="LabelFor" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_preferences">
+
+        <TextView
             android:id="@+id/text_pref_native_method"
             style="@android:style/TextAppearance.Material.Medium"
             android:layout_width="wrap_content"
