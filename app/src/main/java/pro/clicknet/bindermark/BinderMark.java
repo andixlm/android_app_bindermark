@@ -219,12 +219,12 @@ public class BinderMark extends AppCompatActivity {
                         mResultText.setText(
                                 String.format(Locale.getDefault(), "Results:\n\t" +
                                                 "Size: %d\n\t" +
-                                                "Native method: %s\n\t" +
                                                 "Transactions amount: %d\n\t" +
+                                                "Native method: %s\n\t" +
                                                 "Average (ns): %d\n\t" +
                                                 "Deviation (ns): %d\n\t",
-                                        mSize, String.valueOf(mNativeMethod),
-                                        mTransactionsAmount, mResult, mDeviation
+                                        mSize, mTransactionsAmount, String.valueOf(mNativeMethod),
+                                        mResult, mDeviation
                                 )
                         );
                     }
