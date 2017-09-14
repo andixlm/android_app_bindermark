@@ -123,6 +123,38 @@ public class BMBackend {
         mOnCompleteListener = listener;
     }
 
+    public class Result {
+
+        private long mResult;
+        private long mDeviation;
+
+        public Result() {
+
+        }
+
+        public Result(long result, long deviation) {
+            mResult = result;
+            mDeviation = deviation;
+        }
+
+        public long getResult() {
+            return mResult;
+        }
+
+        public void setResult(long result) {
+            mResult = result;
+        }
+
+        public long getDeviation() {
+            return mDeviation;
+        }
+
+        public void setDeviation(long deviation) {
+            mDeviation = deviation;
+        }
+
+    }
+
     private class Native {
 
         public void create() {
