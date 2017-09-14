@@ -42,8 +42,6 @@ public class BinderMark extends AppCompatActivity {
 
     private long mResult;
     private long mDeviation;
-    private long[] mResults;
-    private int mResultsIdx;
     private TextView mResultText;
 
     private ProgressBar mProgressBar;
@@ -151,11 +149,10 @@ public class BinderMark extends AppCompatActivity {
                     return;
                 }
 
-                mResults = new long[mTransactionsAmount];
-
                 mProgressBar.setMax(mTransactionsAmount);
 
                 mBackend.setSize(mSize);
+                mBackend.setTransactionsAmount(mTransactionsAmount);
                 mBackend.setNativeMethod(mNativeMethod);
 
                 mBackend.create();
@@ -177,38 +174,14 @@ public class BinderMark extends AppCompatActivity {
                     protected void onPreExecute() {
                         mPerformButton.setEnabled(false);
                         mDestroyBackendButton.setEnabled(false);
-
-                        mProgressBar.setProgress(0);
-
                         mResultText.setText(R.string.text_result_default_value);
                     }
 
                     @Override
                     protected Void doInBackground(Void... params) {
-                        mResult = 0;
-
-                        for (mResultsIdx = 0; mResultsIdx < mTransactionsAmount; ++mResultsIdx) {
-                            mBackend.perform();
-                            mResult += mResults[mResultsIdx];
-
-                            publishProgress(mResultsIdx + 1);
-                        }
-
-                        mResult /= mTransactionsAmount;
-
-                        double deviationSum = 0.0;
-                        for (int idx = 0; idx < mTransactionsAmount; ++idx) {
-                            deviationSum += Math.pow(mResults[idx] - (double) mResult, 2.0);
-                        }
-
-                        mDeviation = Math.round(Math.sqrt(deviationSum / (double) mTransactionsAmount));
+                        mBackend.perform();
 
                         return null;
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(Integer... values) {
-                        mProgressBar.setProgress(values[0]);
                     }
 
                     @Override
@@ -258,9 +231,9 @@ public class BinderMark extends AppCompatActivity {
         mBackend.setOnCompleteListener(new BMBackend.OnCompleteListener() {
 
             @Override
-            public void onComplete(BMResponse response) {
-                // mResultsIdx is updated in Perform button click.
-                mResults[mResultsIdx] = (response != null) ? response.getReceiptTime() : 0;
+            public void onComplete(BMBackend.Result result) {
+                mResult = result.getResult();
+                mDeviation = result.getDeviation();
             }
 
         });
