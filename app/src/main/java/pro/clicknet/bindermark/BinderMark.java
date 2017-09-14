@@ -27,7 +27,7 @@ public class BinderMark extends AppCompatActivity {
 
     public static final int MINIMUM_TRANSACTIONS_AMOUNT = 1;
     public static final int MAXIMUM_TRANSACTIONS_AMOUNT = 1000000;
-    public static final int DEFAULT_TRANSACTIONS_AMOUNT = 100;
+    public static final int DEFAULT_TRANSACTIONS_AMOUNT = 1000;
 
     public static final boolean DEFAULT_NATIVE_METHOD = false;
 
