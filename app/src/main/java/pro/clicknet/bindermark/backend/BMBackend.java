@@ -240,26 +240,26 @@ public class BMBackend {
         }
 
         public BMBackend.Result perform() {
-            mResult = 0;
+            long totalResult = 0;
 
             try {
                 for (int idx = 0; idx < mTransactionsAmount; ++idx) {
                     mResults[idx] = mClientService.perform().getReceiptTime();
-                    mResult += mResults[idx];
+                    totalResult += mResults[idx];
                 }
 
-                long initialAverage = mResult / mTransactionsAmount;
+                long initialAverage = totalResult / mTransactionsAmount;
                 int realTransactionsAmount = mTransactionsAmount;
                 for (int idx = 0; idx < mTransactionsAmount; ++idx) {
                     if ((double) mResults[idx] / (double) initialAverage > 1.1) {
-                        mResult -= mResults[idx];
+                        totalResult -= mResults[idx];
                         mResults[idx] = -1;
 
                         --realTransactionsAmount;
                     }
                 }
 
-                long realAverage = mResult / realTransactionsAmount;
+                long realAverage = totalResult / realTransactionsAmount;
 
                 double deviationSum = 0.0;
                 for (int idx = 0; idx < mTransactionsAmount; ++idx) {
