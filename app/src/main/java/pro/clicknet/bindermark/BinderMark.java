@@ -43,8 +43,6 @@ public class BinderMark extends AppCompatActivity {
     private long mDeviation;
     private TextView mResultText;
 
-    private ProgressBar mProgressBar;
-
     private Button mCreateBackendButton;
     private Button mPerformButton;
     private Button mDestroyBackendButton;
@@ -121,9 +119,6 @@ public class BinderMark extends AppCompatActivity {
 
         mResultText = (TextView) findViewById(R.id.text_result);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgressBar.setMax(DEFAULT_TRANSACTIONS_AMOUNT);
-
         mCreateBackendButton = (Button) findViewById(R.id.button_create_backend);
         mCreateBackendButton.setEnabled(true);
         mCreateBackendButton.setOnClickListener(new View.OnClickListener() {
@@ -147,8 +142,6 @@ public class BinderMark extends AppCompatActivity {
                     Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                mProgressBar.setMax(mTransactionsAmount);
 
                 mBackend.setSize(mSize);
                 mBackend.setTransactionsAmount(mTransactionsAmount);
@@ -246,8 +239,6 @@ public class BinderMark extends AppCompatActivity {
         mCreateBackendButton.setEnabled(!mServicesBound);
         mPerformButton.setEnabled(mServicesBound);
         mDestroyBackendButton.setEnabled(mServicesBound);
-
-        mProgressBar.setProgress(0);
 
         mResultText.setText(getString(R.string.text_result_default_value));
     }
