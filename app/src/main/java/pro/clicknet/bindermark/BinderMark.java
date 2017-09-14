@@ -17,7 +17,6 @@ import android.widget.Toast;
 import java.util.Locale;
 
 import pro.clicknet.bindermark.backend.BMBackend;
-import pro.clicknet.bindermarkcommon.BMResponse;
 
 public class BinderMark extends AppCompatActivity {
 
