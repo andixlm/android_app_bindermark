@@ -248,14 +248,27 @@ public class BMBackend {
                     mResult += mResults[idx];
                 }
 
-                mResult /= mTransactionsAmount;
+                long initialAverage = mResult / mTransactionsAmount;
+                int realTransactionsAmount = mTransactionsAmount;
+                for (int idx = 0; idx < mTransactionsAmount; ++idx) {
+                    if ((double) mResults[idx] / (double) initialAverage > 1.1) {
+                        mResult -= mResults[idx];
+                        mResults[idx] = -1;
+
+                        --realTransactionsAmount;
+                    }
+                }
+
+                long realAverage = mResult / realTransactionsAmount;
 
                 double deviationSum = 0.0;
                 for (int idx = 0; idx < mTransactionsAmount; ++idx) {
-                    deviationSum += Math.pow(mResults[idx] - mResult, 2.0);
+                    if (mResults[idx] != -1)
+                        deviationSum += Math.pow(mResults[idx] - realAverage, 2.0);
                 }
 
-                mDeviation = Math.round(Math.sqrt(deviationSum / (double) mTransactionsAmount));
+                mResult = realAverage;
+                mDeviation = Math.round(Math.sqrt(deviationSum / (double) realTransactionsAmount));
             } catch (RemoteException exc) {
                 mResult = mDeviation = 0;
                 Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
