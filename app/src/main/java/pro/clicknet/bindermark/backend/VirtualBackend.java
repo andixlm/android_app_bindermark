@@ -74,7 +74,8 @@ class VirtualBackend {
 
             long initialAverage = totalResult / mTransactionsAmount;
             for (int idx = 0; idx < mTransactionsAmount; ++idx) {
-                if ((double) mResults[idx] / (double) initialAverage > 1.1) {
+                // TODO: Use statistics rule to determine fault.
+                if ((double) mResults[idx] / (double) initialAverage > 10.0) {
                     totalResult -= mResults[idx];
                     mResults[idx] = -1;
 
