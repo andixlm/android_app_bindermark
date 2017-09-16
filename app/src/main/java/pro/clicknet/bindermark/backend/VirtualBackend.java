@@ -64,6 +64,7 @@ class VirtualBackend {
 
     public BMResult perform() {
         long totalResult = 0;
+        int realTransactionsAmount = mTransactionsAmount;
 
         try {
             for (int idx = 0; idx < mTransactionsAmount; ++idx) {
@@ -72,7 +73,6 @@ class VirtualBackend {
             }
 
             long initialAverage = totalResult / mTransactionsAmount;
-            int realTransactionsAmount = mTransactionsAmount;
             for (int idx = 0; idx < mTransactionsAmount; ++idx) {
                 if ((double) mResults[idx] / (double) initialAverage > 1.1) {
                     totalResult -= mResults[idx];
@@ -99,6 +99,7 @@ class VirtualBackend {
 
         mBMResult.setResult(mResult);
         mBMResult.setDeviation(mDeviation);
+        mBMResult.setFaultsAmount(mTransactionsAmount - realTransactionsAmount);
 
         return mBMResult;
     }
