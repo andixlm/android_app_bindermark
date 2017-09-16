@@ -34,6 +34,7 @@ public class BinderMark extends AppCompatActivity {
     private EditText mSizeText;
 
     private int mTransactionsAmount;
+    private int mFaultsAmount;
     private EditText mTransactionsAmountText;
 
     private boolean mNativeMethod;
@@ -80,6 +81,7 @@ public class BinderMark extends AppCompatActivity {
         });
 
         mTransactionsAmount = DEFAULT_TRANSACTIONS_AMOUNT;
+        mFaultsAmount = 0;
         mTransactionsAmountText = (EditText) findViewById(R.id.text_transactions_amount);
         mTransactionsAmountText.setText(String.valueOf(mTransactionsAmount));
         mTransactionsAmountText.addTextChangedListener(new TextWatcher() {
@@ -185,11 +187,12 @@ public class BinderMark extends AppCompatActivity {
                                 String.format(Locale.getDefault(), "Results:\n\t" +
                                                 "Size: %d\n\t" +
                                                 "Transactions amount: %d\n\t" +
+                                                "Faults amount: %d\n\t" +
                                                 "Native method: %s\n\t" +
                                                 "Average (ns): %d\n\t" +
                                                 "Deviation (ns): %d\n\t",
-                                        mSize, mTransactionsAmount, String.valueOf(mNativeMethod),
-                                        mResult, mDeviation
+                                        mSize, mTransactionsAmount, mFaultsAmount,
+                                        String.valueOf(mNativeMethod), mResult, mDeviation
                                 )
                         );
                     }
@@ -226,6 +229,7 @@ public class BinderMark extends AppCompatActivity {
             public void onComplete(BMResult result) {
                 mResult = result.getResult();
                 mDeviation = result.getDeviation();
+                mFaultsAmount = result.getFaultsAmount();
             }
 
         });
