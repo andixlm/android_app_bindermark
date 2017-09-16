@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.Locale;
 
 import pro.clicknet.bindermark.backend.BMBackend;
+import pro.clicknet.bindermark.backend.BMResult;
 
 public class BinderMark extends AppCompatActivity {
 
@@ -222,7 +223,7 @@ public class BinderMark extends AppCompatActivity {
         mBackend.setOnCompleteListener(new BMBackend.OnCompleteListener() {
 
             @Override
-            public void onComplete(BMBackend.Result result) {
+            public void onComplete(BMResult result) {
                 mResult = result.getResult();
                 mDeviation = result.getDeviation();
             }
