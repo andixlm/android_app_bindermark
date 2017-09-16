@@ -4,6 +4,7 @@ public class BMResult {
 
     private long mResult;
     private long mDeviation;
+    private int mFaultsAmount;
 
     public BMResult() {
 
@@ -28,6 +29,14 @@ public class BMResult {
 
     public void setDeviation(long deviation) {
         mDeviation = deviation;
+    }
+
+    public int getFaultsAmount() {
+        return mFaultsAmount;
+    }
+
+    public void setFaultsAmount(int faultsAmount) {
+        mFaultsAmount = faultsAmount;
     }
 
 }
