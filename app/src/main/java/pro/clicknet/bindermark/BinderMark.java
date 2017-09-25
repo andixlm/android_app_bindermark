@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,8 @@ public class BinderMark extends AppCompatActivity {
 
     private boolean mNativeMethod;
     private Switch mNativeMethodSwitch;
+
+    private ProgressBar mProgressBar;
 
     private long mResult;
     private long mDeviation;
@@ -72,6 +75,8 @@ public class BinderMark extends AppCompatActivity {
         mNativeMethodSwitch = (Switch) findViewById(R.id.switch_native_method);
         mNativeMethodSwitch.setOnCheckedChangeListener(mNativeSwitchOnCheckedChangeListener);
         mNativeMethodSwitch.setChecked(mNativeMethod);
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         mResultText = (TextView) findViewById(R.id.text_result);
 
@@ -186,6 +191,8 @@ public class BinderMark extends AppCompatActivity {
 
                 @Override
                 protected void onPreExecute() {
+                    mProgressBar.setVisibility(View.VISIBLE);
+
                     mPerformButton.setEnabled(false);
                     mDestroyBackendButton.setEnabled(false);
                     mResultText.setText(R.string.text_result_default_value);
@@ -193,6 +200,8 @@ public class BinderMark extends AppCompatActivity {
 
                 @Override
                 protected void onPostExecute(Void result) {
+                    mProgressBar.setVisibility(View.GONE);
+
                     mPerformButton.setEnabled(true);
                     onServicesBoundChange(true);
                 }
@@ -218,6 +227,8 @@ public class BinderMark extends AppCompatActivity {
 
                 @Override
                 protected void onPreExecute() {
+                    mProgressBar.setVisibility(View.VISIBLE);
+
                     mPerformButton.setEnabled(false);
                     mDestroyBackendButton.setEnabled(false);
                     mResultText.setText(R.string.text_result_default_value);
@@ -225,6 +236,8 @@ public class BinderMark extends AppCompatActivity {
 
                 @Override
                 protected void onPostExecute(Void result) {
+                    mProgressBar.setVisibility(View.GONE);
+
                     mPerformButton.setEnabled(true);
                     mDestroyBackendButton.setEnabled(true);
 
