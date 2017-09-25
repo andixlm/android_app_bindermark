@@ -60,179 +60,36 @@ public class BinderMark extends AppCompatActivity {
         mSize = DEFAULT_SIZE;
         mSizeText = (EditText) findViewById(R.id.text_size);
         mSizeText.setText(String.valueOf(mSize));
-        mSizeText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mBackend.destroy();
-                onServicesBoundChange(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-
-        });
+        mSizeText.addTextChangedListener(mTextChangedListener);
 
         mTransactionsAmount = DEFAULT_TRANSACTIONS_AMOUNT;
         mFaultsAmount = 0;
         mTransactionsAmountText = (EditText) findViewById(R.id.text_transactions_amount);
         mTransactionsAmountText.setText(String.valueOf(mTransactionsAmount));
-        mTransactionsAmountText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mBackend.destroy();
-                onServicesBoundChange(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-
-        });
+        mTransactionsAmountText.addTextChangedListener(mTextChangedListener);
 
         mNativeMethod = DEFAULT_NATIVE_METHOD;
         mNativeMethodSwitch = (Switch) findViewById(R.id.switch_native_method);
-        mNativeMethodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mNativeMethod = isChecked;
-
-                mBackend.destroy();
-                onServicesBoundChange(false);
-            }
-
-        });
+        mNativeMethodSwitch.setOnCheckedChangeListener(mNativeSwitchOnCheckedChangeListener);
         mNativeMethodSwitch.setChecked(mNativeMethod);
 
         mResultText = (TextView) findViewById(R.id.text_result);
 
         mCreateBackendButton = (Button) findViewById(R.id.button_create_backend);
         mCreateBackendButton.setEnabled(true);
-        mCreateBackendButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                try {
-                    mSize = Integer.parseInt(mSizeText.getText().toString());
-
-                    if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
-                        throw new NumberFormatException("Size is out of allowed bounds");
-                    }
-
-                    mTransactionsAmount = Integer.parseInt(mTransactionsAmountText.getText().toString());
-
-                    if (mTransactionsAmount < MINIMUM_TRANSACTIONS_AMOUNT ||
-                            mTransactionsAmount > MAXIMUM_TRANSACTIONS_AMOUNT) {
-                        throw new NumberFormatException("Transactions amount is out of allowed bounds");
-                    }
-                } catch (NumberFormatException exc) {
-                    Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                mBackend.setSize(mSize);
-                mBackend.setTransactionsAmount(mTransactionsAmount);
-                mBackend.setNativeMethod(mNativeMethod);
-
-                mBackend.create();
-                onServicesBoundChange(true);
-            }
-
-        });
+        mCreateBackendButton.setOnClickListener(mCreateButtonOnClickListener);
 
         mPerformButton = (Button) findViewById(R.id.button_perform_test);
         mPerformButton.setEnabled(false);
-        mPerformButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                new AsyncTask<Void, Integer, Void>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        mPerformButton.setEnabled(false);
-                        mDestroyBackendButton.setEnabled(false);
-                        mResultText.setText(R.string.text_result_default_value);
-                    }
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        mBackend.perform();
-
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        mPerformButton.setEnabled(true);
-                        mDestroyBackendButton.setEnabled(true);
-
-                        mResultText.setText(
-                                String.format(Locale.getDefault(), "Results:\n\t" +
-                                                "Size: %d\n\t" +
-                                                "Transactions amount: %d\n\t" +
-                                                "Faults amount: %d\n\t" +
-                                                "Native method: %s\n\t" +
-                                                "Average (ns): %d\n\t" +
-                                                "Deviation (ns): %d\n\t",
-                                        mSize, mTransactionsAmount, mFaultsAmount,
-                                        String.valueOf(mNativeMethod), mResult, mDeviation
-                                )
-                        );
-                    }
-
-                }.execute();
-            }
-
-        });
+        mPerformButton.setOnClickListener(mPerformButtonOnClickListener);
 
         mDestroyBackendButton = (Button) findViewById(R.id.button_destroy_backend);
         mDestroyBackendButton.setEnabled(false);
-        mDestroyBackendButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                mBackend.destroy();
-                onServicesBoundChange(false);
-            }
-
-        });
+        mDestroyBackendButton.setOnClickListener(mDestroyButtonOnClickListener);
 
         mBackend = new BMBackend(this);
-        mBackend.setOnCreateListener(new BMBackend.OnCreateListener() {
-
-            @Override
-            public void onCreate() {
-                mPerformButton.setEnabled(true);
-            }
-
-        });
-        mBackend.setOnCompleteListener(new BMBackend.OnCompleteListener() {
-
-            @Override
-            public void onComplete(BMResult result) {
-                mResult = result.getResult();
-                mDeviation = result.getDeviation();
-                mFaultsAmount = result.getFaultsAmount();
-            }
-
-        });
+        mBackend.setOnCreateListener(mBackendOnCreateListener);
+        mBackend.setOnCompleteListener(mBackendOnCompleteListener);
 
         mServicesBound = false;
     }
@@ -246,5 +103,149 @@ public class BinderMark extends AppCompatActivity {
 
         mResultText.setText(getString(R.string.text_result_default_value));
     }
+
+    /* Listeners */
+
+    private TextWatcher mTextChangedListener = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            mBackend.destroy();
+            onServicesBoundChange(false);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+
+    };
+
+    private CompoundButton.OnCheckedChangeListener mNativeSwitchOnCheckedChangeListener =
+            new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mNativeMethod = isChecked;
+
+                    mBackend.destroy();
+                    onServicesBoundChange(false);
+                }
+
+            };
+
+    private BMBackend.OnCreateListener mBackendOnCreateListener =
+            new BMBackend.OnCreateListener() {
+
+                @Override
+                public void onCreate() {
+                    mPerformButton.setEnabled(true);
+                }
+
+            };
+
+    private BMBackend.OnCompleteListener mBackendOnCompleteListener =
+            new BMBackend.OnCompleteListener() {
+
+                @Override
+                public void onComplete(BMResult result) {
+                    mResult = result.getResult();
+                    mDeviation = result.getDeviation();
+                    mFaultsAmount = result.getFaultsAmount();
+                }
+
+            };
+
+    private View.OnClickListener mCreateButtonOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            try {
+                mSize = Integer.parseInt(mSizeText.getText().toString());
+
+                if (mSize < MINIMUM_SIZE || mSize > MAXIMUM_SIZE) {
+                    throw new NumberFormatException("Size is out of allowed bounds");
+                }
+
+                mTransactionsAmount = Integer.parseInt(mTransactionsAmountText.getText().toString());
+
+                if (mTransactionsAmount < MINIMUM_TRANSACTIONS_AMOUNT ||
+                        mTransactionsAmount > MAXIMUM_TRANSACTIONS_AMOUNT) {
+                    throw new NumberFormatException("Transactions amount is out of allowed bounds");
+                }
+            } catch (NumberFormatException exc) {
+                Toast.makeText(BinderMark.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mBackend.setSize(mSize);
+            mBackend.setTransactionsAmount(mTransactionsAmount);
+            mBackend.setNativeMethod(mNativeMethod);
+
+            mBackend.create();
+            onServicesBoundChange(true);
+        }
+
+    };
+
+    private View.OnClickListener mPerformButtonOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+
+            new AsyncTask<Void, Integer, Void>() {
+
+                @Override
+                protected void onPreExecute() {
+                    mPerformButton.setEnabled(false);
+                    mDestroyBackendButton.setEnabled(false);
+                    mResultText.setText(R.string.text_result_default_value);
+                }
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    mBackend.perform();
+
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    mPerformButton.setEnabled(true);
+                    mDestroyBackendButton.setEnabled(true);
+
+                    mResultText.setText(
+                            String.format(Locale.getDefault(), "Results:\n\t" +
+                                            "Size: %d\n\t" +
+                                            "Transactions amount: %d\n\t" +
+                                            "Faults amount: %d\n\t" +
+                                            "Native method: %s\n\t" +
+                                            "Average (ns): %d\n\t" +
+                                            "Deviation (ns): %d\n\t",
+                                    mSize, mTransactionsAmount, mFaultsAmount,
+                                    String.valueOf(mNativeMethod), mResult, mDeviation
+                            )
+                    );
+                }
+
+            }.execute();
+        }
+
+    };
+
+    private View.OnClickListener mDestroyButtonOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            mBackend.destroy();
+            onServicesBoundChange(false);
+        }
+
+    };
 
 }
