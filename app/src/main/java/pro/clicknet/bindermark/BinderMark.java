@@ -214,20 +214,13 @@ public class BinderMark extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            new AsyncTask<Void, Integer, Void>() {
+            new AsyncTask<Void, Void, Void>() {
 
                 @Override
                 protected void onPreExecute() {
                     mPerformButton.setEnabled(false);
                     mDestroyBackendButton.setEnabled(false);
                     mResultText.setText(R.string.text_result_default_value);
-                }
-
-                @Override
-                protected Void doInBackground(Void... params) {
-                    mBackend.perform();
-
-                    return null;
                 }
 
                 @Override
@@ -247,6 +240,13 @@ public class BinderMark extends AppCompatActivity {
                                     String.valueOf(mNativeMethod), mResult, mDeviation
                             )
                     );
+                }
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    mBackend.perform();
+
+                    return null;
                 }
 
             }.execute();
