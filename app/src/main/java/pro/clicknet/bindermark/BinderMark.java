@@ -154,9 +154,15 @@ public class BinderMark extends AppCompatActivity {
 
                 @Override
                 public void onComplete(BMResult result) {
-                    mResult = result.getResult();
-                    mDeviation = result.getDeviation();
-                    mFaultsAmount = result.getFaultsAmount();
+                    if (result != null) {
+                        mResult = result.getResult();
+                        mDeviation = result.getDeviation();
+                        mFaultsAmount = result.getFaultsAmount();
+                    } else {
+                        mResult = 0;
+                        mDeviation = 0;
+                        mFaultsAmount = 0;
+                    }
                 }
 
             };
