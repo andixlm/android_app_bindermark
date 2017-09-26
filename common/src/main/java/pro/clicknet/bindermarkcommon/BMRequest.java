@@ -5,24 +5,21 @@ import android.os.Parcelable;
 
 public class BMRequest implements Parcelable {
 
-    private String mData;
+    private byte[] mData;
 
-    public BMRequest(String data) {
+    public BMRequest(byte[] data) {
         mData = data;
     }
 
     public BMRequest(int size) {
-        mData = generateString(size);
+        mData = generateByteArray(size);
     }
 
     /*
-     * Creates a String of @size in KB.
+     * Creates byte array of @size in KB.
      */
-    public static String generateString(int size) {
-        // Java char is 2 bytes. Length equals to (size / 2 * 1024).
-        int length = size * 512;
-
-        return String.format("%0" + length + "d", 0);
+    public static byte[] generateByteArray(int size) {
+        return new byte[1024 * size];
     }
 
     @Override
@@ -32,7 +29,7 @@ public class BMRequest implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel in, int flags) {
-        in.writeString(mData);
+        in.writeByteArray(mData);
     }
 
     public static final Creator<BMRequest> CREATOR =
@@ -40,7 +37,7 @@ public class BMRequest implements Parcelable {
 
                 @Override
                 public BMRequest createFromParcel(Parcel in) {
-                    return new BMRequest(in.readString());
+                    return new BMRequest(in.createByteArray());
                 }
 
                 @Override
@@ -50,11 +47,11 @@ public class BMRequest implements Parcelable {
 
             };
 
-    public String getData() {
+    public byte[] getData() {
         return mData;
     }
 
-    public void setData(String data) {
+    public void setData(byte[] data) {
         mData = data;
     }
 
