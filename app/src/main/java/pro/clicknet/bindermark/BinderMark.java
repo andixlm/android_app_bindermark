@@ -93,6 +93,7 @@ public class BinderMark extends AppCompatActivity {
         mDestroyBackendButton.setOnClickListener(mDestroyButtonOnClickListener);
 
         mBackend = new BMBackend(this);
+        mBackend.setOnCreateListener(mBackendOnCreateListener);
         mBackend.setOnCompleteListener(mBackendOnCompleteListener);
 
         mServicesBound = false;
@@ -143,6 +144,16 @@ public class BinderMark extends AppCompatActivity {
 
             };
 
+    private BMBackend.OnCreateListener mBackendOnCreateListener =
+            new BMBackend.OnCreateListener() {
+
+                @Override
+                public void onCreate() {
+                    mPerformButton.setEnabled(true);
+                }
+
+            };
+
     private BMBackend.OnCompleteListener mBackendOnCompleteListener =
             new BMBackend.OnCompleteListener() {
 
@@ -187,33 +198,8 @@ public class BinderMark extends AppCompatActivity {
             mBackend.setTransactionsAmount(mTransactionsAmount);
             mBackend.setNativeMethod(mNativeMethod);
 
-            new AsyncTask<Void, Void, Void>() {
-
-                @Override
-                protected void onPreExecute() {
-                    mProgressBar.setVisibility(View.VISIBLE);
-
-                    mPerformButton.setEnabled(false);
-                    mDestroyBackendButton.setEnabled(false);
-                    mResultText.setText(R.string.text_result_default_value);
-                }
-
-                @Override
-                protected void onPostExecute(Void result) {
-                    mProgressBar.setVisibility(View.GONE);
-
-                    mPerformButton.setEnabled(true);
-                    onServicesBoundChange(true);
-                }
-
-                @Override
-                protected Void doInBackground(Void... params) {
-                    mBackend.create();
-
-                    return null;
-                }
-
-            }.execute();
+            mBackend.create();
+            onServicesBoundChange(true);
         }
 
     };
