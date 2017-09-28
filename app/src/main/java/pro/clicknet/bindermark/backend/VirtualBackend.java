@@ -16,6 +16,8 @@ import pro.clicknet.bindermarkcommon.IBMServerService;
 
 class VirtualBackend {
 
+    private static final double TTEST_SELECTED_VALUE = 2.807;
+
     private Context mContext;
 
     private int mSize;
@@ -63,36 +65,46 @@ class VirtualBackend {
     }
 
     public BMResult perform() {
-        long totalResult = 0;
         int realTransactionsAmount = mTransactionsAmount;
 
         try {
+            long totalResult = 0;
+
+            // Calculate sample sum.
             for (int idx = 0; idx < mTransactionsAmount; ++idx) {
                 mResults[idx] = mClientService.perform().getReceiptTime();
                 totalResult += mResults[idx];
             }
+            // Calculate initial mean.
+            long initialMean = totalResult / mTransactionsAmount;
 
-            long initialAverage = totalResult / mTransactionsAmount;
+            // Calculate initial deviation.
+            double deviationSum = 0.0;
             for (int idx = 0; idx < mTransactionsAmount; ++idx) {
-                // TODO: Use statistics rule to determine fault.
-                if ((double) mResults[idx] / (double) initialAverage > 10.0) {
+                deviationSum += Math.pow((double) (mResults[idx] - initialMean), 2.0);
+            }
+            mDeviation = Math.round(Math.sqrt(deviationSum / (double) (mTransactionsAmount - 1)));
+
+            // Check for faults.
+            for (int idx = 0; idx < mTransactionsAmount; ++idx) {
+                if (isFault(mResults[idx], initialMean, mDeviation, mTransactionsAmount)) {
                     totalResult -= mResults[idx];
                     mResults[idx] = -1;
 
                     --realTransactionsAmount;
                 }
             }
+            // Calculate final mean.
+            mResult = totalResult / realTransactionsAmount;
 
-            long realAverage = totalResult / realTransactionsAmount;
-
-            double deviationSum = 0.0;
+            // Calculate final deviation.
+            deviationSum = 0.0;
             for (int idx = 0; idx < mTransactionsAmount; ++idx) {
-                if (mResults[idx] != -1)
-                    deviationSum += Math.pow(mResults[idx] - realAverage, 2.0);
+                if (mResults[idx] != -1) {
+                    deviationSum += Math.pow((double) (mResults[idx] - initialMean), 2.0);
+                }
             }
-
-            mResult = realAverage;
-            mDeviation = Math.round(Math.sqrt(deviationSum / (double) realTransactionsAmount));
+            mDeviation = Math.round(Math.sqrt(deviationSum / (double) (realTransactionsAmount - 1)));
         } catch (RemoteException exc) {
             mResult = mDeviation = 0;
             Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
@@ -115,6 +127,11 @@ class VirtualBackend {
             mContext.unbindService(mServerServiceConnection);
             mServerService = null;
         }
+    }
+
+    static private boolean isFault(long value, long average, long deviation, int amount) {
+        return (double) Math.abs(value - average) /
+                ((double) deviation * Math.sqrt((amount + 1) / amount)) > TTEST_SELECTED_VALUE;
     }
 
     public int getSize() {
