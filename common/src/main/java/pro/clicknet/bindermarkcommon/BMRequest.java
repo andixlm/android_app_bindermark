@@ -32,6 +32,14 @@ public class BMRequest implements Parcelable {
         in.writeByteArray(mData);
     }
 
+    public byte[] getData() {
+        return mData;
+    }
+
+    public void setData(byte[] data) {
+        mData = data;
+    }
+
     public static final Creator<BMRequest> CREATOR =
             new Creator<BMRequest>() {
 
@@ -46,13 +54,5 @@ public class BMRequest implements Parcelable {
                 }
 
             };
-
-    public byte[] getData() {
-        return mData;
-    }
-
-    public void setData(byte[] data) {
-        mData = data;
-    }
 
 }

@@ -7,12 +7,15 @@ public class BMResult {
     private int mFaultsAmount;
 
     public BMResult() {
-
+        mResult = 0;
+        mDeviation = 0;
+        mFaultsAmount = 0;
     }
 
-    public BMResult(long result, long deviation) {
+    public BMResult(long result, long deviation, int faultsAmount) {
         mResult = result;
         mDeviation = deviation;
+        mFaultsAmount = faultsAmount;
     }
 
     public long getResult() {

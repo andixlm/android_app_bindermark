@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 public class BMResponse implements Parcelable {
 
-    private long mReceiptTime;
+    private long mTime;
 
-    public BMResponse(long receiptTime) {
-        mReceiptTime = receiptTime;
+    public BMResponse(long time) {
+        mTime = time;
     }
 
     @Override
@@ -18,7 +18,15 @@ public class BMResponse implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeLong(mReceiptTime);
+        out.writeLong(mTime);
+    }
+
+    public long getTime() {
+        return mTime;
+    }
+
+    public void setTime(long time) {
+        mTime = time;
     }
 
     public static final Creator<BMResponse> CREATOR =
@@ -35,13 +43,5 @@ public class BMResponse implements Parcelable {
                 }
 
             };
-
-    public long getReceiptTime() {
-        return mReceiptTime;
-    }
-
-    public void setReceiptTime(long receiptTime) {
-        mReceiptTime = receiptTime;
-    }
 
 }

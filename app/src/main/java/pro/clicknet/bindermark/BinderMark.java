@@ -34,8 +34,8 @@ public class BinderMark extends AppCompatActivity {
     private int mSize;
     private EditText mSizeText;
 
-    private int mTransactionsAmount;
     private int mFaultsAmount;
+    private int mTransactionsAmount;
     private EditText mTransactionsAmountText;
 
     private boolean mNativeMethod;
@@ -58,15 +58,15 @@ public class BinderMark extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.bindermark);
+        setContentView(R.layout.bindermark_main);
 
         mSize = DEFAULT_SIZE;
         mSizeText = (EditText) findViewById(R.id.text_size);
         mSizeText.setText(String.valueOf(mSize));
         mSizeText.addTextChangedListener(mTextChangedListener);
 
-        mTransactionsAmount = DEFAULT_TRANSACTIONS_AMOUNT;
         mFaultsAmount = 0;
+        mTransactionsAmount = DEFAULT_TRANSACTIONS_AMOUNT;
         mTransactionsAmountText = (EditText) findViewById(R.id.text_transactions_amount);
         mTransactionsAmountText.setText(String.valueOf(mTransactionsAmount));
         mTransactionsAmountText.addTextChangedListener(mTextChangedListener);
@@ -96,7 +96,7 @@ public class BinderMark extends AppCompatActivity {
         mBackend.setOnCreateListener(mBackendOnCreateListener);
         mBackend.setOnCompleteListener(mBackendOnCompleteListener);
 
-        mServicesBound = false;
+        onServicesBoundChange(false);
     }
 
     private void onServicesBoundChange(boolean servicesBound) {
@@ -110,40 +110,6 @@ public class BinderMark extends AppCompatActivity {
     }
 
     /* Listeners */
-
-    private TextWatcher mTextChangedListener = new TextWatcher() {
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            mBackend.destroy();
-            onServicesBoundChange(false);
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-
-    };
-
-    private CompoundButton.OnCheckedChangeListener mNativeSwitchOnCheckedChangeListener =
-            new CompoundButton.OnCheckedChangeListener() {
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mNativeMethod = isChecked;
-
-                    mBackend.destroy();
-                    onServicesBoundChange(false);
-                }
-
-            };
-
     private BMBackend.OnCreateListener mBackendOnCreateListener =
             new BMBackend.OnCreateListener() {
 
@@ -168,6 +134,39 @@ public class BinderMark extends AppCompatActivity {
                         mDeviation = 0;
                         mFaultsAmount = 0;
                     }
+                }
+
+            };
+
+    private TextWatcher mTextChangedListener = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mBackend.destroy();
+            onServicesBoundChange(false);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+
+    };
+
+    private CompoundButton.OnCheckedChangeListener mNativeSwitchOnCheckedChangeListener =
+            new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mNativeMethod = isChecked;
+
+                    mBackend.destroy();
+                    onServicesBoundChange(false);
                 }
 
             };
@@ -222,11 +221,12 @@ public class BinderMark extends AppCompatActivity {
 
                 @Override
                 protected void onPostExecute(Void result) {
-                    mProgressBar.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.INVISIBLE);
 
                     mPerformButton.setEnabled(true);
                     mDestroyBackendButton.setEnabled(true);
 
+                    // mResult, mDeviation, mFaultsAmount are updated in mBackendOnCompleteListener.
                     mResultText.setText(
                             String.format(Locale.getDefault(), "Results:\n\t" +
                                             "Size: %d\n\t" +
@@ -243,6 +243,7 @@ public class BinderMark extends AppCompatActivity {
 
                 @Override
                 protected Void doInBackground(Void... params) {
+                    // mBackendOnCompleteListener is called after test.
                     mBackend.perform();
 
                     return null;

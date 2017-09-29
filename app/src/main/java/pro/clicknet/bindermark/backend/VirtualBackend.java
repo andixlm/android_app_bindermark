@@ -38,6 +38,7 @@ class VirtualBackend {
 
     public VirtualBackend(Context context) {
         mContext = context;
+
         mSize = BinderMark.DEFAULT_SIZE;
         mTransactionsAmount = BinderMark.DEFAULT_TRANSACTIONS_AMOUNT;
 
@@ -52,14 +53,12 @@ class VirtualBackend {
 
     public void create() throws InstantiationException {
         Intent serverIntent = new Intent(mContext, BMServerService.class);
-        if (!mContext.bindService(serverIntent, mServerServiceConnection,
-                Context.BIND_AUTO_CREATE)) {
+        if (!mContext.bindService(serverIntent, mServerServiceConnection, Context.BIND_AUTO_CREATE)) {
             throw new InstantiationException("Can't create server");
         }
 
         Intent clientIntent = new Intent(mContext, BMClientService.class);
-        if (!mContext.bindService(clientIntent, mClientServiceConnection,
-                Context.BIND_AUTO_CREATE)) {
+        if (!mContext.bindService(clientIntent, mClientServiceConnection, Context.BIND_AUTO_CREATE)) {
             throw new InstantiationException("Can't create client");
         }
     }
@@ -72,7 +71,7 @@ class VirtualBackend {
 
             // Calculate sample sum.
             for (int idx = 0; idx < mTransactionsAmount; ++idx) {
-                mResults[idx] = mClientService.perform().getReceiptTime();
+                mResults[idx] = mClientService.perform().getTime();
                 totalResult += mResults[idx];
             }
             // Calculate initial mean.

@@ -14,16 +14,12 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
 
     private IBMServerService mServer;
 
-    public IBMClientServiceImpl() {
-        mServer = null;
-    }
-
     @Override
     public void setup(int size, IBMServerService server) {
         mSize = size;
-        mServer = server;
-
         mRequest = new BMRequest(mSize);
+
+        mServer = server;
     }
 
     @Override
@@ -33,9 +29,9 @@ public class IBMClientServiceImpl extends IBMClientService.Stub {
         }
 
         long startTime = System.nanoTime();
-        BMResponse response = mServer.get(mRequest);
 
-        response.setReceiptTime(response.getReceiptTime() - startTime);
+        BMResponse response = mServer.get(mRequest);
+        response.setTime(response.getTime() - startTime);
 
         return response;
     }
