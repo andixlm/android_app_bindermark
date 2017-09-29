@@ -4,7 +4,7 @@
     <string name="app_name">BinderMark</string>
 
     <string name="text_pref_size_value">Size (1–1024 KB):</string>
-    <string name="text_pref_transactions_amount">Transactions amount:</string>
+    <string name="text_pref_transactions_amount">Transactions (128–1024):</string>
     <string name="text_pref_native_method_value">Native method?</string>
 
     <string name="text_result_default_value">Results:\n\t</string>
