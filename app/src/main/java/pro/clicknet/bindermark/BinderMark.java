@@ -22,8 +22,8 @@ import pro.clicknet.bindermark.backend.BMResult;
 public class BinderMark extends AppCompatActivity {
 
     public static final int MINIMUM_SIZE = 1;
-    public static final int MAXIMUM_SIZE = 512;
-    public static final int DEFAULT_SIZE = MINIMUM_SIZE;
+    public static final int MAXIMUM_SIZE = 1024;
+    public static final int DEFAULT_SIZE = MAXIMUM_SIZE / 2;
 
     public static final int MINIMUM_TRANSACTIONS_AMOUNT = 128;
     public static final int MAXIMUM_TRANSACTIONS_AMOUNT = 1024;
