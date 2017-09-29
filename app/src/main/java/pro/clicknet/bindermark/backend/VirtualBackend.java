@@ -172,6 +172,8 @@ class VirtualBackend {
             try {
                 // Server must be created in advance.
                 mClientService.setup(mSize, mServerService);
+                // Initial test to alert binder.
+                mClientService.perform();
             } catch (RemoteException exc) {
                 Toast.makeText(mContext, exc.getMessage(), Toast.LENGTH_SHORT).show();
             }
